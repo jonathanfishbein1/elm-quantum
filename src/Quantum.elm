@@ -1,5 +1,6 @@
 module Quantum exposing (..)
 
+import Field
 import Matrix
 import Vector
 
@@ -24,3 +25,13 @@ h =
         [ Matrix.RowVector (Vector.Vector [ 1, 1 ])
         , Matrix.RowVector (Vector.Vector [ 1, -1 ])
         ]
+        |> Matrix.scalarMultiplication Field.numberField (1 / sqrt 2)
+
+
+x : Matrix.Matrix Float
+x =
+    Matrix.Matrix
+        [ Matrix.RowVector (Vector.Vector [ 0, 1 ])
+        , Matrix.RowVector (Vector.Vector [ 1, 0 ])
+        ]
+        |> Matrix.scalarMultiplication Field.numberField (1 / sqrt 2)
