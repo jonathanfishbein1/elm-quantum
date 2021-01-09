@@ -1,5 +1,6 @@
 module Quantum exposing (..)
 
+import AbelianGroup exposing (AbelianGroup)
 import Field
 import Matrix
 import Vector
@@ -22,6 +23,12 @@ ket1 =
 ketPlus : Ket Float
 ketPlus =
     add ket0 ket1
+        |> scalarMultiplication (1 / Basics.sqrt 2)
+
+
+ketMinus : Ket Float
+ketMinus =
+    add ket0 (inverse ket1)
         |> scalarMultiplication (1 / Basics.sqrt 2)
 
 
@@ -53,3 +60,13 @@ x =
         , Matrix.RowVector (Vector.Vector [ 1, 0 ])
         ]
         |> Matrix.scalarMultiplication Field.numberField (1 / sqrt 2)
+
+
+inverse : Ket Float -> Ket Float
+inverse (Ket vector) =
+    let
+        (AbelianGroup.AbelianGroup vGroup) =
+            Vector.realVectorSpace.abelianGroup
+    in
+    vGroup.inverse vector
+        |> Ket
