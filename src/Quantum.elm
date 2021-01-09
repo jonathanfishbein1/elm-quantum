@@ -19,6 +19,24 @@ ket1 =
     Ket (Vector.Vector [ 0, 1 ])
 
 
+ketPlus : Ket Float
+ketPlus =
+    add ket0 ket1
+        |> scalarMultiplication (1 / Basics.sqrt 2)
+
+
+add : Ket Float -> Ket Float -> Ket Float
+add (Ket vectorOne) (Ket vectorTwo) =
+    Vector.addVectors Field.numberField vectorOne vectorTwo
+        |> Ket
+
+
+scalarMultiplication : Float -> Ket Float -> Ket Float
+scalarMultiplication scalar (Ket vector) =
+    Vector.scalarMultiplication Field.numberField scalar vector
+        |> Ket
+
+
 h : Matrix.Matrix Float
 h =
     Matrix.Matrix
