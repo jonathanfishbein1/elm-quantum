@@ -34,13 +34,13 @@ ketMinus =
 
 add : Ket Float -> Ket Float -> Ket Float
 add (Ket vectorOne) (Ket vectorTwo) =
-    Vector.addVectors Field.numberField vectorOne vectorTwo
+    Vector.add Field.float vectorOne vectorTwo
         |> Ket
 
 
 scalarMultiplication : Float -> Ket Float -> Ket Float
 scalarMultiplication scalar (Ket vector) =
-    Vector.scalarMultiplication Field.numberField scalar vector
+    Vector.scalarMultiplication Field.float scalar vector
         |> Ket
 
 
@@ -50,7 +50,7 @@ h =
         [ Matrix.RowVector (Vector.Vector [ 1, 1 ])
         , Matrix.RowVector (Vector.Vector [ 1, -1 ])
         ]
-        |> Matrix.scalarMultiplication Field.numberField (1 / sqrt 2)
+        |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
 
 
 x : Matrix.Matrix Float
@@ -59,7 +59,7 @@ x =
         [ Matrix.RowVector (Vector.Vector [ 0, 1 ])
         , Matrix.RowVector (Vector.Vector [ 1, 0 ])
         ]
-        |> Matrix.scalarMultiplication Field.numberField (1 / sqrt 2)
+        |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
 
 
 inverse : Ket Float -> Ket Float
