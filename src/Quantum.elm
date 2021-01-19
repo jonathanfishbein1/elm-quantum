@@ -1,4 +1,13 @@
-module Quantum exposing (..)
+module Quantum exposing
+    ( add
+    , h
+    , ket0
+    , ket1
+    , ketMinus
+    , ketPlus
+    , scalarMultiplication
+    , x
+    )
 
 import AbelianGroup
 import Field
