@@ -5,11 +5,13 @@ module Quantum exposing
     , ket1
     , ketMinus
     , ketPlus
+    , probabilityOfState
     , scalarMultiplication
     , x
     )
 
 import AbelianGroup
+import CommutativeDivisionRing
 import Field
 import Matrix
 import Number.Bounded
@@ -49,8 +51,33 @@ import Vector
 @docs x
 
 -}
+
+
+{-| Ket Type
+-}
 type Ket a
     = Ket (Vector.Vector a)
+
+
+{-| Bra Type
+-}
+type Bra a
+    = Bra (Vector.Vector a)
+
+
+{-| Calculate the probability of end state, the Bra, with given start state, the Ket
+-}
+probabilityOfState : Vector.InnerProductSpace a -> Bra a -> Ket a -> Result String a
+probabilityOfState innerProductSpace (Bra bra) (Ket ket) =
+    let
+        (Field.Field (CommutativeDivisionRing.CommutativeDivisionRing commutativeDivisionRing)) =
+            innerProductSpace.vectorSpace.field
+
+        (AbelianGroup.AbelianGroup group) =
+            commutativeDivisionRing.addition
+    in
+    Matrix.multiplyMatrixVector innerProductSpace (Matrix.Matrix [ Matrix.RowVector bra ]) ket
+        |> Result.map (Vector.sum group.monoid)
 
 
 probability : Number.Bounded.Bounded Float
