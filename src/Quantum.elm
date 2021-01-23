@@ -40,7 +40,6 @@ module Quantum exposing
 # Unitary Operations
 
 @docs scalarMultiplication
-@docs dimension
 
 
 # Binary Operations
