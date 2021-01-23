@@ -1,5 +1,7 @@
 module Quantum exposing
-    ( ket
+    ( Ket
+    , Bra
+    , ket
     , bra
     , ket0
     , ket1
@@ -13,6 +15,12 @@ module Quantum exposing
     )
 
 {-| Quantum Computing Simulator in Elm
+
+
+# Types
+
+@docs Ket
+@docs Bra
 
 
 # Type constructors
