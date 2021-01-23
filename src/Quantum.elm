@@ -5,8 +5,11 @@ module Quantum exposing
     , ket1
     , ketPlus
     , ketMinus
+    , ketComplex0
+    , ketComplex1
+    , ketComplexPlus
+    , ketComplexMinus
     , scalarMultiplication
-    , dimension
     , add
     , h
     , x
@@ -28,12 +31,15 @@ module Quantum exposing
 @docs ket1
 @docs ketPlus
 @docs ketMinus
+@docs ketComplex0
+@docs ketComplex1
+@docs ketComplexPlus
+@docs ketComplexMinus
 
 
 # Unitary Operations
 
 @docs scalarMultiplication
-@docs dimension
 
 
 # Binary Operations
@@ -51,6 +57,7 @@ module Quantum exposing
 
 import AbelianGroup
 import CommutativeDivisionRing
+import ComplexNumbers
 import Field
 import Group
 import Matrix
@@ -114,6 +121,36 @@ ketMinus =
         |> scalarMultiplication Field.float (1 / Basics.sqrt 2)
 
 
+{-| Ket representing zero state with complex numbers
+-}
+ketComplex0 : Ket (ComplexNumbers.ComplexNumber Float)
+ketComplex0 =
+    Ket (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+
+
+{-| Ket representing one state with complex numbers
+-}
+ketComplex1 : Ket (ComplexNumbers.ComplexNumber Float)
+ketComplex1 =
+    Ket (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.one ])
+
+
+{-| Ket representing + state with complex numbers
+-}
+ketComplexPlus : Ket (ComplexNumbers.ComplexNumber Float)
+ketComplexPlus =
+    add ComplexNumbers.complexField ketComplex0 ketComplex1
+        |> scalarMultiplication ComplexNumbers.complexField (ComplexNumbers.ComplexNumber (ComplexNumbers.Real (1 / Basics.sqrt 2)) (ComplexNumbers.Imaginary 0))
+
+
+{-| Ket representing + state with complex numbers
+-}
+ketComplexMinus : Ket (ComplexNumbers.ComplexNumber Float)
+ketComplexMinus =
+    add ComplexNumbers.complexField ketComplex0 (inverse ComplexNumbers.complexSumGroup ketComplex1)
+        |> scalarMultiplication ComplexNumbers.complexField (ComplexNumbers.ComplexNumber (ComplexNumbers.Real (1 / Basics.sqrt 2)) (ComplexNumbers.Imaginary 0))
+
+
 {-| Add two Kets
 -}
 add : Field.Field a -> Ket a -> Ket a -> Ket a
@@ -158,10 +195,3 @@ inverse : Group.Group a -> Ket a -> Ket a
 inverse group (Ket vector) =
     Vector.map group.inverse vector
         |> Ket
-
-
-{-| Dimension of Ket
--}
-dimension : Ket a -> Int
-dimension (Ket vector) =
-    Vector.dimension vector
