@@ -22,12 +22,6 @@ module Quantum exposing
 @docs Bra
 
 
-# Type constructors
-
-@docs ket
-@docs bra
-
-
 # Values
 
 @docs ket0
