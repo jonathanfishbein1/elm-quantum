@@ -1,6 +1,7 @@
 module Quantum exposing
     ( add
     , h
+    , ket
     , ket0
     , ket1
     , ketMinus
@@ -14,7 +15,7 @@ import AbelianGroup
 import CommutativeDivisionRing
 import Field
 import Matrix
-import Number.Bounded
+import Monoid
 import Vector
 
 
@@ -68,7 +69,7 @@ type Bra a
 {-| Calculate the probability of end state, the Bra, with given start state, the Ket
 -}
 probabilityOfState : Vector.InnerProductSpace a -> Bra a -> Ket a -> Result String a
-probabilityOfState innerProductSpace (Bra bra) (Ket ket) =
+probabilityOfState innerProductSpace (Bra bra) (Ket kt) =
     let
         (Field.Field (CommutativeDivisionRing.CommutativeDivisionRing commutativeDivisionRing)) =
             innerProductSpace.vectorSpace.field
@@ -76,59 +77,53 @@ probabilityOfState innerProductSpace (Bra bra) (Ket ket) =
         (AbelianGroup.AbelianGroup group) =
             commutativeDivisionRing.addition
     in
-    Matrix.multiplyMatrixVector innerProductSpace (Matrix.Matrix [ Matrix.RowVector bra ]) ket
+    Matrix.multiplyMatrixVector innerProductSpace (Matrix.Matrix [ Matrix.RowVector bra ]) kt
         |> Result.map (Vector.sum group.monoid)
-
-
-probability : Number.Bounded.Bounded Float
-probability =
-    Number.Bounded.between 0 1
 
 
 {-| Ket representing zero state
 -}
-ket0 : Ket (Number.Bounded.Bounded Float)
+ket0 : Ket number
 ket0 =
-    Ket (Vector.Vector [ Number.Bounded.set 1 probability, Number.Bounded.set 0 probability ])
+    Ket (Vector.Vector [ 1, 0 ])
 
 
 {-| Ket representing one state
 -}
-ket1 : Ket (Number.Bounded.Bounded Float)
+ket1 : Ket number
 ket1 =
-    Ket (Vector.Vector [ Number.Bounded.set 0 probability, Number.Bounded.set 1 probability ])
+    Ket (Vector.Vector [ 0, 1 ])
 
 
 {-| Ket representing + state
 -}
-ketPlus : Ket (Number.Bounded.Bounded Float)
+ketPlus : Ket number
 ketPlus =
-    add ket0 ket1
+    add Field.float ket0 ket1
         |> scalarMultiplication (1 / Basics.sqrt 2)
 
 
 {-| Ket representing + state
 -}
-ketMinus : Ket (Number.Bounded.Bounded Float)
+ketMinus : Ket number
 ketMinus =
-    add ket0 (inverse ket1)
+    add Field.float ket0 (inverse ket1)
         |> scalarMultiplication (1 / Basics.sqrt 2)
 
 
 {-| Add two Kets
 -}
-add : Ket (Number.Bounded.Bounded Float) -> Ket (Number.Bounded.Bounded Float) -> Ket (Number.Bounded.Bounded Float)
-add (Ket vectorOne) (Ket vectorTwo) =
-    Vector.map2 (\vectOneNum vectTwoNum -> Number.Bounded.set (Number.Bounded.value vectOneNum + Number.Bounded.value vectTwoNum) probability) vectorOne vectorTwo
+add : Field.Field a -> Ket a -> Ket a -> Ket a
+add field (Ket vectorOne) (Ket vectorTwo) =
+    Vector.add field vectorOne vectorTwo
         |> Ket
 
 
 {-| Multiply a Ket by a Scalar
 -}
-scalarMultiplication : Float -> Ket (Number.Bounded.Bounded Float) -> Ket (Number.Bounded.Bounded Float)
+scalarMultiplication : Float -> Ket a -> Ket a
 scalarMultiplication scalar (Ket vector) =
-    Vector.scalarMultiplication Field.float scalar (Vector.map Number.Bounded.value vector)
-        |> Vector.map (\element -> Number.Bounded.set element probability)
+    Vector.scalarMultiplication Field.float scalar vector
         |> Ket
 
 
@@ -156,12 +151,23 @@ x =
 
 {-| Inverse Ket
 -}
-inverse : Ket (Number.Bounded.Bounded Float) -> Ket (Number.Bounded.Bounded Float)
+inverse : Ket a -> Ket a
 inverse (Ket vector) =
     let
         (AbelianGroup.AbelianGroup vGroup) =
             Vector.realVectorSpace.abelianGroup
     in
-    vGroup.inverse (Vector.map Number.Bounded.value vector)
-        |> Vector.map (\element -> Number.Bounded.set element probability)
+    vGroup.inverse vector
         |> Ket
+
+
+{-| Create Ket
+-}
+ket : Monoid.Monoid a -> Vector.Vector a -> Result String (Ket a)
+ket monoid vector =
+    if Vector.sum monoid vector == monoid.identity then
+        Ket vector
+            |> Ok
+
+    else
+        Err ""
