@@ -1,8 +1,6 @@
 module Quantum exposing
-    ( Ket
-    , Bra
-    , ket
-    , bra
+    ( Ket(..)
+    , Bra(..)
     , ket0
     , ket1
     , ketPlus
@@ -62,7 +60,6 @@ import CommutativeDivisionRing
 import Field
 import Group
 import Matrix
-import Monoid
 import Vector
 
 
@@ -167,28 +164,6 @@ inverse : Group.Group a -> Ket a -> Ket a
 inverse group (Ket vector) =
     Vector.map group.inverse vector
         |> Ket
-
-
-{-| Create Ket
--}
-ket : Monoid.Monoid a -> Vector.Vector a -> Result String (Ket a)
-ket monoid vector =
-    if Vector.sum monoid vector == monoid.identity then
-        Ket vector
-            |> Ok
-
-    else
-        Err ""
-
-
-{-| Create Bra
--}
-bra : Ket a -> Bra a
-bra (Ket vector) =
-    Matrix.RowVector vector
-        |> List.singleton
-        |> Matrix.Matrix
-        |> Bra
 
 
 {-| Dimension of Ket
