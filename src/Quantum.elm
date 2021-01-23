@@ -1,24 +1,14 @@
 module Quantum exposing
-    ( add
-    , h
-    , ket
-    , ket0
+    ( ket0
     , ket1
-    , ketMinus
     , ketPlus
-    , probabilityOfState
+    , ketMinus
     , scalarMultiplication
+    , add
+    , h
     , x
+    , ket, probabilityOfState
     )
-
-import AbelianGroup
-import CommutativeDivisionRing
-import Field
-import Group
-import Matrix
-import Monoid
-import Vector
-
 
 {-| Quantum Computing Simulator in Elm
 
@@ -53,6 +43,14 @@ import Vector
 @docs x
 
 -}
+
+import AbelianGroup
+import CommutativeDivisionRing
+import Field
+import Group
+import Matrix
+import Monoid
+import Vector
 
 
 {-| Ket Type
