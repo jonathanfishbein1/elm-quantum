@@ -8,6 +8,7 @@ module Quantum exposing
     , ketPlus
     , ketMinus
     , scalarMultiplication
+    , dimension
     , add
     , h
     , x
@@ -40,6 +41,7 @@ module Quantum exposing
 # Unitary Operations
 
 @docs scalarMultiplication
+@docs dimension
 
 
 # Binary Operations
@@ -187,3 +189,10 @@ bra (Ket vector) =
         |> List.singleton
         |> Matrix.Matrix
         |> Bra
+
+
+{-| Dimension of Ket
+-}
+dimension : Ket a -> Int
+dimension (Ket vector) =
+    Vector.dimension vector
