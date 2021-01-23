@@ -1,5 +1,6 @@
 module Quantum exposing
     ( ket
+    , bra
     , ket0
     , ket1
     , ketPlus
@@ -17,6 +18,7 @@ module Quantum exposing
 # Type constructors
 
 @docs ket
+@docs bra
 
 
 # Values
@@ -63,13 +65,13 @@ type Ket a
 {-| Bra Type
 -}
 type Bra a
-    = Bra (Vector.Vector a)
+    = Bra (Matrix.Matrix a)
 
 
 {-| Calculate the probability of end state, the Bra, with given start state, the Ket
 -}
 probabilityOfState : Vector.InnerProductSpace a -> Bra a -> Ket a -> Result String a
-probabilityOfState innerProductSpace (Bra bra) (Ket kt) =
+probabilityOfState innerProductSpace (Bra br) (Ket kt) =
     let
         (Field.Field (CommutativeDivisionRing.CommutativeDivisionRing commutativeDivisionRing)) =
             innerProductSpace.vectorSpace.field
@@ -77,7 +79,7 @@ probabilityOfState innerProductSpace (Bra bra) (Ket kt) =
         (AbelianGroup.AbelianGroup group) =
             commutativeDivisionRing.addition
     in
-    Matrix.multiplyMatrixVector innerProductSpace (Matrix.Matrix [ Matrix.RowVector bra ]) kt
+    Matrix.multiplyMatrixVector innerProductSpace br kt
         |> Result.map (Vector.sum group.monoid)
 
 
@@ -167,3 +169,13 @@ ket monoid vector =
 
     else
         Err ""
+
+
+{-| Create Bra
+-}
+bra : Ket a -> Bra a
+bra (Ket vector) =
+    Matrix.RowVector vector
+        |> List.singleton
+        |> Matrix.Matrix
+        |> Bra
