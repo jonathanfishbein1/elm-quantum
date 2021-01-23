@@ -14,6 +14,7 @@ module Quantum exposing
 import AbelianGroup
 import CommutativeDivisionRing
 import Field
+import Group
 import Matrix
 import Monoid
 import Vector
@@ -107,7 +108,7 @@ ketPlus =
 -}
 ketMinus : Ket Float
 ketMinus =
-    add Field.float ket0 (inverse ket1)
+    add Field.float ket0 (inverse Group.numberSum ket1)
         |> scalarMultiplication Field.float (1 / Basics.sqrt 2)
 
 
@@ -151,13 +152,9 @@ x =
 
 {-| Inverse Ket
 -}
-inverse : Ket a -> Ket a
-inverse (Ket vector) =
-    let
-        (AbelianGroup.AbelianGroup vGroup) =
-            Vector.realVectorSpace.abelianGroup
-    in
-    vGroup.inverse vector
+inverse : Group.Group a -> Ket a -> Ket a
+inverse group (Ket vector) =
+    Vector.map group.inverse vector
         |> Ket
 
 
