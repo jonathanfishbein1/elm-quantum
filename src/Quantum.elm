@@ -1,5 +1,6 @@
 module Quantum exposing
-    ( ket0
+    ( ket
+    , ket0
     , ket1
     , ketPlus
     , ketMinus
@@ -7,15 +8,15 @@ module Quantum exposing
     , add
     , h
     , x
-    , ket, probabilityOfState
+    , probabilityOfState
     )
 
 {-| Quantum Computing Simulator in Elm
 
 
-# Types
+# Type constructors
 
-@docs Ket
+@docs ket
 
 
 # Values
@@ -29,7 +30,6 @@ module Quantum exposing
 # Unitary Operations
 
 @docs scalarMultiplication
-@docs inverse
 
 
 # Binary Operations
@@ -41,6 +41,7 @@ module Quantum exposing
 
 @docs h
 @docs x
+@docs probabilityOfState
 
 -}
 

@@ -1,12 +1,12 @@
 module QauntumTests exposing (..)
 
-import Expect exposing (Expectation)
+import Expect
 import Field
-import Fuzz exposing (Fuzzer, int, list, string)
+import Fuzz
 import Monoid
 import Quantum
 import Result
-import Test exposing (..)
+import Test
 import Vector
 
 
