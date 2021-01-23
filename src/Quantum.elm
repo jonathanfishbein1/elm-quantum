@@ -10,7 +10,6 @@ module Quantum exposing
     , ketComplexPlus
     , ketComplexMinus
     , scalarMultiplication
-    , dimension
     , add
     , h
     , x
