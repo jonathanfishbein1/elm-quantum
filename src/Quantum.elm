@@ -197,10 +197,3 @@ inverse : Group.Group a -> Ket a -> Ket a
 inverse group (Ket vector) =
     Vector.map group.inverse vector
         |> Ket
-
-
-{-| Dimension of Ket
--}
-dimension : Ket a -> Int
-dimension (Ket vector) =
-    Vector.dimension vector
