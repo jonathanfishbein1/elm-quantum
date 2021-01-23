@@ -83,32 +83,32 @@ probabilityOfState innerProductSpace (Bra bra) (Ket kt) =
 
 {-| Ket representing zero state
 -}
-ket0 : Ket number
+ket0 : Ket Float
 ket0 =
     Ket (Vector.Vector [ 1, 0 ])
 
 
 {-| Ket representing one state
 -}
-ket1 : Ket number
+ket1 : Ket Float
 ket1 =
     Ket (Vector.Vector [ 0, 1 ])
 
 
 {-| Ket representing + state
 -}
-ketPlus : Ket number
+ketPlus : Ket Float
 ketPlus =
     add Field.float ket0 ket1
-        |> scalarMultiplication (1 / Basics.sqrt 2)
+        |> scalarMultiplication Field.float (1 / Basics.sqrt 2)
 
 
 {-| Ket representing + state
 -}
-ketMinus : Ket number
+ketMinus : Ket Float
 ketMinus =
     add Field.float ket0 (inverse ket1)
-        |> scalarMultiplication (1 / Basics.sqrt 2)
+        |> scalarMultiplication Field.float (1 / Basics.sqrt 2)
 
 
 {-| Add two Kets
@@ -121,9 +121,9 @@ add field (Ket vectorOne) (Ket vectorTwo) =
 
 {-| Multiply a Ket by a Scalar
 -}
-scalarMultiplication : Float -> Ket a -> Ket a
-scalarMultiplication scalar (Ket vector) =
-    Vector.scalarMultiplication Field.float scalar vector
+scalarMultiplication : Field.Field a -> a -> Ket a -> Ket a
+scalarMultiplication field scalar (Ket vector) =
+    Vector.scalarMultiplication field scalar vector
         |> Ket
 
 
