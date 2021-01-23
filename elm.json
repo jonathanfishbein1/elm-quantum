@@ -3,14 +3,14 @@
     "name": "jonathanfishbein1/elm-quantum",
     "summary": "Elm Quantum Simulator",
     "license": "MIT",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "exposed-modules": [
         "Quantum"
     ],
     "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {
         "elm/core": "1.0.0 <= v < 2.0.0",
-        "jonathanfishbein1/linear-algebra": "14.3.0 <= v < 15.0.0",
+        "jonathanfishbein1/linear-algebra": "15.0.0 <= v < 16.0.0",
         "jonathanfishbein1/numeric-typeclasses": "4.0.0 <= v < 5.0.0"
     },
     "test-dependencies": {

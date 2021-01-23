@@ -3,9 +3,7 @@ module QauntumTests exposing (..)
 import Expect
 import Field
 import Fuzz
-import Monoid
 import Quantum
-import Result
 import Test
 import Vector
 
@@ -21,7 +19,7 @@ suite =
             \one two ->
                 let
                     v =
-                        Quantum.ket Monoid.numberSum
+                        Quantum.Ket
                             (Vector.Vector
                                 [ one
                                 , two
@@ -29,13 +27,13 @@ suite =
                             )
 
                     w =
-                        Quantum.ket Monoid.numberSum
+                        Quantum.Ket
                             (Vector.Vector
                                 [ one
                                 , two
                                 ]
                             )
                 in
-                Result.map2 (Quantum.add Field.float) v w
-                    |> Expect.equal (Result.map2 (Quantum.add Field.float) w v)
+                Quantum.add Field.float v w
+                    |> Expect.equal (Quantum.add Field.float w v)
         ]
