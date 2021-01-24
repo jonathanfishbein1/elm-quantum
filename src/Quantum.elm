@@ -10,10 +10,12 @@ module Quantum exposing
     , ketComplexPlus
     , ketComplexMinus
     , scalarMultiplication
+    , dimension
     , add
     , h
     , x
     , probabilityOfState
+    , getAt
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -40,6 +42,7 @@ module Quantum exposing
 # Unitary Operations
 
 @docs scalarMultiplication
+@docs dimension
 
 
 # Binary Operations
@@ -52,6 +55,11 @@ module Quantum exposing
 @docs h
 @docs x
 @docs probabilityOfState
+
+
+# Manipulation
+
+@docs getAt
 
 -}
 
@@ -195,3 +203,17 @@ inverse : Group.Group a -> Ket a -> Ket a
 inverse group (Ket vector) =
     Vector.map group.inverse vector
         |> Ket
+
+
+{-| Get the value in a Ket at the specified index
+-}
+getAt : Int -> Ket a -> Maybe a
+getAt index (Ket vector) =
+    Vector.getAt index vector
+
+
+{-| Count of number of elements in a Ket
+-}
+dimension : Ket a -> Int
+dimension (Ket vector) =
+    Vector.dimension vector
