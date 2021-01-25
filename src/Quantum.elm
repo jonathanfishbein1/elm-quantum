@@ -11,12 +11,13 @@ module Quantum exposing
     , ketComplexMinus
     , scalarMultiplication
     , dimension
+    , sum
+    , foldl
     , add
     , h
     , x
     , probabilityOfState
     , getAt
-    , foldl, sum
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -44,6 +45,8 @@ module Quantum exposing
 
 @docs scalarMultiplication
 @docs dimension
+@docs sum
+@docs foldl
 
 
 # Binary Operations
