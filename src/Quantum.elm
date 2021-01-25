@@ -11,6 +11,8 @@ module Quantum exposing
     , ketComplexMinus
     , scalarMultiplication
     , dimension
+    , sum
+    , foldl
     , add
     , h
     , x
@@ -43,6 +45,8 @@ module Quantum exposing
 
 @docs scalarMultiplication
 @docs dimension
+@docs sum
+@docs foldl
 
 
 # Binary Operations
@@ -69,6 +73,7 @@ import ComplexNumbers
 import Field
 import Group
 import Matrix
+import Monoid
 import Vector
 
 
@@ -217,3 +222,17 @@ getAt index (Ket vector) =
 dimension : Ket a -> Int
 dimension (Ket vector) =
     Vector.dimension vector
+
+
+{-| Left fold over a Ket
+-}
+foldl : (a -> b -> b) -> b -> Ket a -> b
+foldl foldFunction acc (Ket vector) =
+    Vector.foldl foldFunction acc vector
+
+
+{-| Calculate the sum of a Ket
+-}
+sum : Monoid.Monoid a -> Ket a -> a
+sum monoid (Ket vector) =
+    Vector.sum monoid vector
