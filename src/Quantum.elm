@@ -18,6 +18,7 @@ module Quantum exposing
     , x
     , probabilityOfState
     , multiplyHermitianMatrixKet
+    , expectedValue
     , getAt
     )
 
@@ -61,6 +62,7 @@ module Quantum exposing
 @docs x
 @docs probabilityOfState
 @docs multiplyHermitianMatrixKet
+@docs expectedValue
 
 
 # Manipulation
@@ -250,3 +252,49 @@ multiplyHermitianMatrixKet :
 multiplyHermitianMatrixKet matrix (Ket vector) =
     HermitianMatrix.multiplyMatrixVector matrix vector
         |> Result.map Ket
+
+
+{-| Calculate the expected value when a Ket is multiplied by a Hermitian Matrix
+-}
+expectedValue :
+    HermitianMatrix.HermitianMatrix (ComplexNumbers.ComplexNumber Float)
+    -> Ket (ComplexNumbers.ComplexNumber Float)
+    -> Result String Float
+expectedValue matrix ket =
+    let
+        hState =
+            multiplyHermitianMatrixKet matrix ket
+
+        hBra =
+            hState
+                |> Result.map (conjugate >> (\(Ket v) -> Bra (Matrix.Matrix [ Matrix.RowVector v ])))
+
+        pState =
+            Result.map2 (probabilityOfState Vector.complexInnerProductSpace) hBra hState
+    in
+    pState
+        |> Result.andThen
+            (\probOfState ->
+                case probOfState of
+                    Ok res ->
+                        Ok (ComplexNumbers.real res)
+
+                    Err error ->
+                        Err error
+            )
+
+
+{-| Map over a vector
+-}
+map : (a -> b) -> Ket a -> Ket b
+map f (Ket vector) =
+    Ket <| Vector.map f vector
+
+
+{-| Take the complex conjugate of a Complex Numbered Vector
+-}
+conjugate :
+    Ket (ComplexNumbers.ComplexNumber number)
+    -> Ket (ComplexNumbers.ComplexNumber number)
+conjugate =
+    map ComplexNumbers.conjugate
