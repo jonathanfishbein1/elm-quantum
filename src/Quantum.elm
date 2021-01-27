@@ -20,6 +20,7 @@ module Quantum exposing
     , multiplyHermitianMatrixKet
     , expectedValue
     , getAt
+    , equal
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -96,8 +97,8 @@ type Bra a
 
 {-| Calculate the probability of end state, the Bra, with given start state, the Ket
 -}
-probabilityOfState : Vector.InnerProductSpace a -> Bra a -> Ket a -> Result String a
-probabilityOfState innerProductSpace (Bra br) (Ket kt) =
+probabilityOfState : Vector.InnerProductSpace a -> Ket a -> Bra a -> Result String a
+probabilityOfState innerProductSpace (Ket kt) (Bra br) =
     let
         (Field.Field (CommutativeDivisionRing.CommutativeDivisionRing commutativeDivisionRing)) =
             innerProductSpace.vectorSpace.field
@@ -270,18 +271,10 @@ expectedValue matrix ket =
                 |> Result.map (conjugate >> (\(Ket v) -> Bra (Matrix.Matrix [ Matrix.RowVector v ])))
 
         pState =
-            Result.map2 (probabilityOfState Vector.complexInnerProductSpace) hBra hState
+            Result.andThen (probabilityOfState Vector.complexInnerProductSpace ket) hBra
+                |> Result.map ComplexNumbers.real
     in
     pState
-        |> Result.andThen
-            (\probOfState ->
-                case probOfState of
-                    Ok res ->
-                        Ok (ComplexNumbers.real res)
-
-                    Err error ->
-                        Err error
-            )
 
 
 {-| Map over a vector
@@ -298,3 +291,10 @@ conjugate :
     -> Ket (ComplexNumbers.ComplexNumber number)
 conjugate =
     map ComplexNumbers.conjugate
+
+
+{-| Compare two vectors for equality using a comparator
+-}
+equal : (a -> a -> Bool) -> Ket a -> Ket a -> Bool
+equal comparator (Ket vectorOne) (Ket vectorTwo) =
+    Vector.equal comparator vectorOne vectorTwo
