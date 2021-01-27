@@ -17,6 +17,7 @@ module Quantum exposing
     , h
     , x
     , probabilityOfState
+    , multiplyHermitianMatrixKet
     , getAt
     )
 
@@ -59,6 +60,7 @@ module Quantum exposing
 @docs h
 @docs x
 @docs probabilityOfState
+@docs multiplyHermitianMatrixKet
 
 
 # Manipulation
@@ -72,6 +74,7 @@ import CommutativeDivisionRing
 import ComplexNumbers
 import Field
 import Group
+import HermitianMatrix
 import Matrix
 import Monoid
 import Vector
@@ -236,3 +239,14 @@ foldl foldFunction acc (Ket vector) =
 sum : Monoid.Monoid a -> Ket a -> a
 sum monoid (Ket vector) =
     Vector.sum monoid vector
+
+
+{-| Multiply a Vector by a Matrix
+-}
+multiplyHermitianMatrixKet :
+    Vector.InnerProductSpace a
+    -> HermitianMatrix.HermitianMatrix a
+    -> Ket a
+    -> Result String (Vector.Vector a)
+multiplyHermitianMatrixKet innerProductSpace matrix (Ket vector) =
+    HermitianMatrix.multiplyMatrixVector innerProductSpace matrix vector
