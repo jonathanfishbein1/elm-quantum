@@ -244,9 +244,9 @@ sum monoid (Ket vector) =
 {-| Multiply a Vector by a Matrix
 -}
 multiplyHermitianMatrixKet :
-    Vector.InnerProductSpace a
-    -> HermitianMatrix.HermitianMatrix a
-    -> Ket a
-    -> Result String (Vector.Vector a)
-multiplyHermitianMatrixKet innerProductSpace matrix (Ket vector) =
-    HermitianMatrix.multiplyMatrixVector innerProductSpace matrix vector
+    HermitianMatrix.HermitianMatrix (ComplexNumbers.ComplexNumber Float)
+    -> Ket (ComplexNumbers.ComplexNumber Float)
+    -> Result String (Ket (ComplexNumbers.ComplexNumber Float))
+multiplyHermitianMatrixKet matrix (Ket vector) =
+    HermitianMatrix.multiplyMatrixVector matrix vector
+        |> Result.map Ket
