@@ -80,6 +80,7 @@ import Group
 import HermitianMatrix
 import Matrix
 import Monoid
+import SquareMatrix
 import Vector
 
 
@@ -247,7 +248,7 @@ sum monoid (Ket vector) =
 {-| Multiply a Vector by a Matrix
 -}
 multiplyHermitianMatrixKet :
-    HermitianMatrix.HermitianMatrix (ComplexNumbers.ComplexNumber Float)
+    HermitianMatrix.HermitianMatrix Float
     -> Ket (ComplexNumbers.ComplexNumber Float)
     -> Result String (Ket (ComplexNumbers.ComplexNumber Float))
 multiplyHermitianMatrixKet matrix (Ket vector) =
@@ -258,7 +259,7 @@ multiplyHermitianMatrixKet matrix (Ket vector) =
 {-| Calculate the expected value when a Ket is multiplied by a Hermitian Matrix
 -}
 expectedValue :
-    HermitianMatrix.HermitianMatrix (ComplexNumbers.ComplexNumber Float)
+    HermitianMatrix.HermitianMatrix Float
     -> Ket (ComplexNumbers.ComplexNumber Float)
     -> Result String Float
 expectedValue matrix ket =
@@ -298,3 +299,14 @@ conjugate =
 equal : (a -> a -> Bool) -> Ket a -> Ket a -> Bool
 equal comparator (Ket vectorOne) (Ket vectorTwo) =
     Vector.equal comparator vectorOne vectorTwo
+
+
+varianceHermitianOperator : HermitianMatrix.HermitianMatrix Float -> HermitianMatrix.HermitianMatrix Float
+varianceHermitianOperator matrix =
+    let
+        dim =
+            HermitianMatrix.dimension matrix
+    in
+    Matrix.empty
+        |> SquareMatrix.SquareMatrix
+        |> HermitianMatrix.HermitianMatrix
