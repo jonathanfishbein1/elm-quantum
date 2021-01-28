@@ -79,7 +79,7 @@ import CommutativeDivisionRing
 import ComplexNumbers
 import Field
 import Group
-import HermitianMatrix
+import HermitianMatrix exposing (HermitianMatrix(..))
 import Matrix
 import Monoid
 import SquareMatrix
@@ -306,3 +306,4 @@ varianceHermitianOperator ket matrix =
             ((\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (ComplexNumbers.Real extVal) (ComplexNumbers.Imaginary 0)) identityM)
                 >> HermitianMatrix.subtract matrix
             )
+        |> Result.andThen (\dif -> HermitianMatrix.multiply dif dif)
