@@ -19,6 +19,7 @@ module Quantum exposing
     , probabilityOfState
     , multiplyHermitianMatrixKet
     , expectedValue
+    , varianceHermitianOperator
     , getAt
     , equal
     )
@@ -64,6 +65,7 @@ module Quantum exposing
 @docs probabilityOfState
 @docs multiplyHermitianMatrixKet
 @docs expectedValue
+@docs varianceHermitianOperator
 
 
 # Manipulation
@@ -304,18 +306,11 @@ equal comparator (Ket vectorOne) (Ket vectorTwo) =
 varianceHermitianOperator : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String (HermitianMatrix.HermitianMatrix Float)
 varianceHermitianOperator ket matrix =
     let
-        dim =
-            HermitianMatrix.dimension matrix
-
         identityM =
-            HermitianMatrix.identity dim
-
-        expectedVal =
-            expectedValue matrix ket
-
-        expectedValMatrix =
-            Result.map (\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (ComplexNumbers.Real extVal) (ComplexNumbers.Imaginary 0)) identityM) expectedVal
+            HermitianMatrix.dimension matrix
+                |> HermitianMatrix.identity
     in
-    Result.map
-        (HermitianMatrix.subtract matrix)
-        expectedValMatrix
+    expectedValue matrix ket
+        |> Result.map (\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (ComplexNumbers.Real extVal) (ComplexNumbers.Imaginary 0)) identityM)
+        |> Result.map
+            (HermitianMatrix.subtract matrix)
