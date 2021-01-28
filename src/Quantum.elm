@@ -302,6 +302,7 @@ varianceHermitianOperator ket matrix =
                 |> HermitianMatrix.identity
     in
     expectedValue matrix ket
-        |> Result.map (\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (ComplexNumbers.Real extVal) (ComplexNumbers.Imaginary 0)) identityM)
         |> Result.map
-            (HermitianMatrix.subtract matrix)
+            ((\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (ComplexNumbers.Real extVal) (ComplexNumbers.Imaginary 0)) identityM)
+                >> HermitianMatrix.subtract matrix
+            )
