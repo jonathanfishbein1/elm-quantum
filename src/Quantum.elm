@@ -265,19 +265,10 @@ expectedValue :
     -> Ket (ComplexNumbers.ComplexNumber Float)
     -> Result String Float
 expectedValue matrix ket =
-    let
-        hState =
-            multiplyHermitianMatrixKet matrix ket
-
-        hBra =
-            hState
-                |> Result.map (conjugate >> (\(Ket v) -> Bra (Matrix.Matrix [ Matrix.RowVector v ])))
-
-        pState =
-            Result.andThen (probabilityOfState Vector.complexInnerProductSpace ket) hBra
-                |> Result.map ComplexNumbers.real
-    in
-    pState
+    multiplyHermitianMatrixKet matrix ket
+        |> Result.map (conjugate >> (\(Ket v) -> Bra (Matrix.Matrix [ Matrix.RowVector v ])))
+        |> Result.andThen (probabilityOfState Vector.complexInnerProductSpace ket)
+        |> Result.map ComplexNumbers.real
 
 
 {-| Map over a vector
