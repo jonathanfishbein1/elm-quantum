@@ -13,6 +13,7 @@ module Quantum exposing
     , dimension
     , sum
     , foldl
+    , variance
     , add
     , h
     , x
@@ -51,6 +52,7 @@ module Quantum exposing
 @docs dimension
 @docs sum
 @docs foldl
+@docs variance
 
 
 # Binary Operations
@@ -261,10 +263,10 @@ multiplyHermitianMatrixKet matrix (Ket vector) =
 {-| Calculate the expected value when a Ket is multiplied by a Hermitian Matrix
 -}
 expectedValue :
-    HermitianMatrix.HermitianMatrix Float
-    -> Ket (ComplexNumbers.ComplexNumber Float)
+    Ket (ComplexNumbers.ComplexNumber Float)
+    -> HermitianMatrix.HermitianMatrix Float
     -> Result String Float
-expectedValue matrix ket =
+expectedValue ket matrix =
     multiplyHermitianMatrixKet matrix ket
         |> Result.map (conjugate >> (\(Ket v) -> Bra (Matrix.Matrix [ Matrix.RowVector v ])))
         |> Result.andThen (probabilityOfState Vector.complexInnerProductSpace ket)
@@ -301,9 +303,14 @@ varianceHermitianOperator ket matrix =
             HermitianMatrix.dimension matrix
                 |> HermitianMatrix.identity
     in
-    expectedValue matrix ket
+    expectedValue ket matrix
         |> Result.map
             ((\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (ComplexNumbers.Real extVal) (ComplexNumbers.Imaginary 0)) identityM)
                 >> HermitianMatrix.subtract matrix
             )
         |> Result.andThen (\dif -> HermitianMatrix.multiply dif dif)
+
+
+variance : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String Float
+variance ket matrix =
+    Result.andThen (expectedValue ket) (varianceHermitianOperator ket matrix)

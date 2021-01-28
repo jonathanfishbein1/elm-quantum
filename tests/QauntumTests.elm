@@ -61,6 +61,29 @@ suite =
                             |> SquareMatrix.SquareMatrix
                             |> HermitianMatrix.HermitianMatrix
                 in
-                Quantum.expectedValue hermitianMatrix ket
+                Quantum.expectedValue ket hermitianMatrix
                     |> Expect.equal (Result.Ok 2.5000000000000004)
+        , Test.test
+            "tests variance"
+          <|
+            \_ ->
+                let
+                    ket =
+                        Quantum.Ket
+                            (Vector.Vector
+                                [ ComplexNumbers.ComplexNumber (ComplexNumbers.Real (Basics.sqrt 2 / 2)) (ComplexNumbers.Imaginary 0)
+                                , ComplexNumbers.ComplexNumber (ComplexNumbers.Real 0) (ComplexNumbers.Imaginary (Basics.sqrt 2 / 2))
+                                ]
+                            )
+
+                    hermitianMatrix =
+                        Matrix.Matrix
+                            [ Matrix.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.map negate ComplexNumbers.i ])
+                            , Matrix.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.ComplexNumber (ComplexNumbers.Real 2) (ComplexNumbers.Imaginary 0) ])
+                            ]
+                            |> SquareMatrix.SquareMatrix
+                            |> HermitianMatrix.HermitianMatrix
+                in
+                Quantum.variance ket hermitianMatrix
+                    |> Expect.equal (Result.Ok 0.25)
         ]
