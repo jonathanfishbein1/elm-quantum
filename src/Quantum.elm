@@ -301,12 +301,21 @@ equal comparator (Ket vectorOne) (Ket vectorTwo) =
     Vector.equal comparator vectorOne vectorTwo
 
 
-varianceHermitianOperator : HermitianMatrix.HermitianMatrix Float -> HermitianMatrix.HermitianMatrix Float
-varianceHermitianOperator matrix =
+varianceHermitianOperator : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String (HermitianMatrix.HermitianMatrix Float)
+varianceHermitianOperator ket matrix =
     let
         dim =
             HermitianMatrix.dimension matrix
+
+        identityM =
+            HermitianMatrix.identity dim
+
+        expectedVal =
+            expectedValue matrix ket
+
+        expectedValMatrix =
+            Result.map (\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (ComplexNumbers.Real extVal) (ComplexNumbers.Imaginary 0)) identityM) expectedVal
     in
-    Matrix.empty
-        |> SquareMatrix.SquareMatrix
-        |> HermitianMatrix.HermitianMatrix
+    Result.map
+        (HermitianMatrix.subtract matrix)
+        expectedValMatrix
