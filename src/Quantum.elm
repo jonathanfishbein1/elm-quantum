@@ -81,7 +81,7 @@ import CommutativeDivisionRing
 import ComplexNumbers
 import Field
 import Group
-import HermitianMatrix exposing (HermitianMatrix(..))
+import HermitianMatrix
 import Matrix
 import Monoid
 import SquareMatrix
@@ -193,24 +193,26 @@ scalarMultiplication field scalar (Ket vector) =
 
 {-| Hadamard Operation
 -}
-h : Matrix.Matrix Float
+h : SquareMatrix.SquareMatrix Float
 h =
     Matrix.Matrix
         [ Matrix.RowVector (Vector.Vector [ 1, 1 ])
         , Matrix.RowVector (Vector.Vector [ 1, -1 ])
         ]
         |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
+        |> SquareMatrix.SquareMatrix
 
 
 {-| NOT Operation
 -}
-x : Matrix.Matrix Float
+x : SquareMatrix.SquareMatrix Float
 x =
     Matrix.Matrix
         [ Matrix.RowVector (Vector.Vector [ 0, 1 ])
         , Matrix.RowVector (Vector.Vector [ 1, 0 ])
         ]
         |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
+        |> SquareMatrix.SquareMatrix
 
 
 {-| Inverse Ket
