@@ -77,13 +77,17 @@ module Quantum exposing
 -}
 
 import AbelianGroup
+import ColumnVector
 import CommutativeDivisionRing
 import ComplexNumbers
 import Field
 import Group
 import HermitianMatrix
+import InvertableMatrix
 import Matrix
 import Monoid
+import NormalMatrix
+import RowVector
 import SquareMatrix
 import Vector
 
@@ -91,7 +95,7 @@ import Vector
 {-| Ket Type
 -}
 type Ket a
-    = Ket (Vector.Vector a)
+    = Ket (ColumnVector.ColumnVector a)
 
 
 {-| Bra Type
@@ -112,21 +116,21 @@ probabilityOfState innerProductSpace (Ket kt) (Bra br) =
             commutativeDivisionRing.addition
     in
     Matrix.multiplyMatrixVector innerProductSpace br kt
-        |> Result.map (Vector.sum group.monoid)
+        |> Result.map (ColumnVector.sum group.monoid)
 
 
 {-| Ket representing zero state
 -}
 ket0 : Ket Float
 ket0 =
-    Ket (Vector.Vector [ 1, 0 ])
+    Ket (ColumnVector.ColumnVector (Vector.Vector [ 1, 0 ]))
 
 
 {-| Ket representing one state
 -}
 ket1 : Ket Float
 ket1 =
-    Ket (Vector.Vector [ 0, 1 ])
+    Ket (ColumnVector.ColumnVector (Vector.Vector [ 0, 1 ]))
 
 
 {-| Ket representing + state
@@ -149,14 +153,14 @@ ketMinus =
 -}
 ketComplex0 : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplex0 =
-    Ket (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+    Ket (ColumnVector.ColumnVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ]))
 
 
 {-| Ket representing one state with complex numbers
 -}
 ketComplex1 : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplex1 =
-    Ket (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.one ])
+    Ket (ColumnVector.ColumnVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.one ]))
 
 
 {-| Ket representing + state with complex numbers
@@ -179,7 +183,7 @@ ketComplexMinus =
 -}
 add : Field.Field a -> Ket a -> Ket a -> Ket a
 add field (Ket vectorOne) (Ket vectorTwo) =
-    Vector.add field vectorOne vectorTwo
+    ColumnVector.add field vectorOne vectorTwo
         |> Ket
 
 
@@ -187,39 +191,43 @@ add field (Ket vectorOne) (Ket vectorTwo) =
 -}
 scalarMultiplication : Field.Field a -> a -> Ket a -> Ket a
 scalarMultiplication field scalar (Ket vector) =
-    Vector.scalarMultiplication field scalar vector
+    ColumnVector.scalarMultiplication field scalar vector
         |> Ket
 
 
 {-| Hadamard Operation
 -}
-h : SquareMatrix.SquareMatrix Float
+h : InvertableMatrix.InvertableMatrix Float
 h =
     Matrix.Matrix
-        [ Matrix.RowVector (Vector.Vector [ 1, 1 ])
-        , Matrix.RowVector (Vector.Vector [ 1, -1 ])
+        [ RowVector.RowVector (Vector.Vector [ 1, 1 ])
+        , RowVector.RowVector (Vector.Vector [ 1, -1 ])
         ]
         |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
         |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
 
 
 {-| NOT Operation
 -}
-x : SquareMatrix.SquareMatrix Float
+x : InvertableMatrix.InvertableMatrix Float
 x =
     Matrix.Matrix
-        [ Matrix.RowVector (Vector.Vector [ 0, 1 ])
-        , Matrix.RowVector (Vector.Vector [ 1, 0 ])
+        [ RowVector.RowVector (Vector.Vector [ 0, 1 ])
+        , RowVector.RowVector (Vector.Vector [ 1, 0 ])
         ]
         |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
         |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
 
 
 {-| Inverse Ket
 -}
 inverse : Group.Group a -> Ket a -> Ket a
 inverse group (Ket vector) =
-    Vector.map group.inverse vector
+    ColumnVector.map group.inverse vector
         |> Ket
 
 
@@ -227,28 +235,28 @@ inverse group (Ket vector) =
 -}
 getAt : Int -> Ket a -> Maybe a
 getAt index (Ket vector) =
-    Vector.getAt index vector
+    ColumnVector.getAt index vector
 
 
 {-| Count of number of elements in a Ket
 -}
 dimension : Ket a -> Int
 dimension (Ket vector) =
-    Vector.dimension vector
+    ColumnVector.dimension vector
 
 
 {-| Left fold over a Ket
 -}
 foldl : (a -> b -> b) -> b -> Ket a -> b
 foldl foldFunction acc (Ket vector) =
-    Vector.foldl foldFunction acc vector
+    ColumnVector.foldl foldFunction acc vector
 
 
 {-| Calculate the sum of a Ket
 -}
 sum : Monoid.Monoid a -> Ket a -> a
 sum monoid (Ket vector) =
-    Vector.sum monoid vector
+    ColumnVector.sum monoid vector
 
 
 {-| Multiply a Vector by a Matrix
@@ -270,7 +278,7 @@ expectedValue :
     -> Result String Float
 expectedValue ket matrix =
     multiplyHermitianMatrixKet matrix ket
-        |> Result.map (conjugate >> (\(Ket v) -> Bra (Matrix.Matrix [ Matrix.RowVector v ])))
+        |> Result.map (conjugate >> (\(Ket (ColumnVector.ColumnVector v)) -> Bra (Matrix.Matrix [ RowVector.RowVector v ])))
         |> Result.andThen (probabilityOfState Vector.complexInnerProductSpace ket)
         |> Result.map ComplexNumbers.real
 
@@ -279,7 +287,7 @@ expectedValue ket matrix =
 -}
 map : (a -> b) -> Ket a -> Ket b
 map f (Ket vector) =
-    Ket <| Vector.map f vector
+    Ket <| ColumnVector.map f vector
 
 
 {-| Take the complex conjugate of a Complex Numbered Vector
@@ -295,7 +303,7 @@ conjugate =
 -}
 equal : (a -> a -> Bool) -> Ket a -> Ket a -> Bool
 equal comparator (Ket vectorOne) (Ket vectorTwo) =
-    Vector.equal comparator vectorOne vectorTwo
+    ColumnVector.equal comparator vectorOne vectorTwo
 
 
 varianceHermitianOperator : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String (HermitianMatrix.HermitianMatrix Float)

@@ -1,13 +1,17 @@
 module QauntumTests exposing (..)
 
+import ColumnVector
 import ComplexNumbers
 import Expect
 import Field
 import Fuzz
-import HermitianMatrix exposing (HermitianMatrix)
+import HermitianMatrix
 import Matrix
+import NormalMatrix
 import Quantum
-import SquareMatrix exposing (SquareMatrix)
+import RowVector
+import SquareMatrix
+import SymmetricMatrix
 import Test
 import Vector
 
@@ -24,18 +28,22 @@ suite =
                 let
                     v =
                         Quantum.Ket
-                            (Vector.Vector
-                                [ one
-                                , two
-                                ]
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ one
+                                    , two
+                                    ]
+                                )
                             )
 
                     w =
                         Quantum.Ket
-                            (Vector.Vector
-                                [ one
-                                , two
-                                ]
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ one
+                                    , two
+                                    ]
+                                )
                             )
                 in
                 Quantum.add Field.float v w
@@ -47,18 +55,22 @@ suite =
                 let
                     ket =
                         Quantum.Ket
-                            (Vector.Vector
-                                [ ComplexNumbers.ComplexNumber (ComplexNumbers.Real (Basics.sqrt 2 / 2)) (ComplexNumbers.Imaginary 0)
-                                , ComplexNumbers.ComplexNumber (ComplexNumbers.Real 0) (ComplexNumbers.Imaginary (Basics.sqrt 2 / 2))
-                                ]
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ ComplexNumbers.ComplexNumber (ComplexNumbers.Real (Basics.sqrt 2 / 2)) (ComplexNumbers.Imaginary 0)
+                                    , ComplexNumbers.ComplexNumber (ComplexNumbers.Real 0) (ComplexNumbers.Imaginary (Basics.sqrt 2 / 2))
+                                    ]
+                                )
                             )
 
                     hermitianMatrix =
                         Matrix.Matrix
-                            [ Matrix.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.map negate ComplexNumbers.i ])
-                            , Matrix.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.ComplexNumber (ComplexNumbers.Real 2) (ComplexNumbers.Imaginary 0) ])
+                            [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.map negate ComplexNumbers.i ])
+                            , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.ComplexNumber (ComplexNumbers.Real 2) (ComplexNumbers.Imaginary 0) ])
                             ]
                             |> SquareMatrix.SquareMatrix
+                            |> NormalMatrix.NormalMatrix
+                            |> SymmetricMatrix.SymmetricMatrix
                             |> HermitianMatrix.HermitianMatrix
                 in
                 Quantum.expectedValue ket hermitianMatrix
@@ -70,18 +82,22 @@ suite =
                 let
                     ket =
                         Quantum.Ket
-                            (Vector.Vector
-                                [ ComplexNumbers.ComplexNumber (ComplexNumbers.Real (Basics.sqrt 2 / 2)) (ComplexNumbers.Imaginary 0)
-                                , ComplexNumbers.ComplexNumber (ComplexNumbers.Real 0) (ComplexNumbers.Imaginary (Basics.sqrt 2 / 2))
-                                ]
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ ComplexNumbers.ComplexNumber (ComplexNumbers.Real (Basics.sqrt 2 / 2)) (ComplexNumbers.Imaginary 0)
+                                    , ComplexNumbers.ComplexNumber (ComplexNumbers.Real 0) (ComplexNumbers.Imaginary (Basics.sqrt 2 / 2))
+                                    ]
+                                )
                             )
 
                     hermitianMatrix =
                         Matrix.Matrix
-                            [ Matrix.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.map negate ComplexNumbers.i ])
-                            , Matrix.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.ComplexNumber (ComplexNumbers.Real 2) (ComplexNumbers.Imaginary 0) ])
+                            [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.map negate ComplexNumbers.i ])
+                            , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.ComplexNumber (ComplexNumbers.Real 2) (ComplexNumbers.Imaginary 0) ])
                             ]
                             |> SquareMatrix.SquareMatrix
+                            |> NormalMatrix.NormalMatrix
+                            |> SymmetricMatrix.SymmetricMatrix
                             |> HermitianMatrix.HermitianMatrix
                 in
                 Quantum.variance ket hermitianMatrix
