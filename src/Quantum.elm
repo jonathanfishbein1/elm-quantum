@@ -22,7 +22,7 @@ module Quantum exposing
     , expectedValue
     , varianceHermitianOperator
     , getAt
-    , cNOT, equal
+    , cNOT, equal, toffoli
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -223,10 +223,10 @@ x =
         |> InvertableMatrix.InvertableMatrix
 
 
-{-| controlled-NOT Operation
+{-| Toffoli Operation
 -}
-cNOT : InvertableMatrix.InvertableMatrix Float
-cNOT =
+toffoli : InvertableMatrix.InvertableMatrix Float
+toffoli =
     Matrix.Matrix
         [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0, 0, 0, 0, 0 ])
         , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0, 0, 0, 0, 0 ])
@@ -236,6 +236,22 @@ cNOT =
         , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 1, 0, 0 ])
         , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 0, 1 ])
         , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 1, 0 ])
+        ]
+        |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+
+
+{-| controlled-NOT Operation
+-}
+cNOT : InvertableMatrix.InvertableMatrix Float
+cNOT =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0 ])
         ]
         |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
         |> SquareMatrix.SquareMatrix
