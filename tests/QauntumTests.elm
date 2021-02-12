@@ -6,6 +6,7 @@ import Expect
 import Field
 import Fuzz
 import HermitianMatrix
+import InvertableMatrix exposing (InvertableMatrix)
 import Matrix
 import NormalMatrix
 import Quantum
@@ -102,4 +103,21 @@ suite =
                 in
                 Quantum.variance ket hermitianMatrix
                     |> Expect.equal (Result.Ok 0.25)
+        , Test.test
+            "tests Not gate"
+          <|
+            \_ ->
+                let
+                    ket =
+                        Quantum.Ket
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ 1
+                                    , 0
+                                    ]
+                                )
+                            )
+                in
+                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.x ket
+                    |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 0, 1 ]))))
         ]

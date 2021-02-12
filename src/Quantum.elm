@@ -22,7 +22,7 @@ module Quantum exposing
     , expectedValue
     , varianceHermitianOperator
     , getAt
-    , cNOT, equal, fredkin, toffoli
+    , cNOT, equal, fredkin, multiplyInvertableMatrixKet, toffoli
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -217,7 +217,6 @@ x =
         [ RowVector.RowVector (Vector.Vector [ 0, 1 ])
         , RowVector.RowVector (Vector.Vector [ 1, 0 ])
         ]
-        |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -323,6 +322,18 @@ multiplyHermitianMatrixKet :
     -> Result String (Ket (ComplexNumbers.ComplexNumber Float))
 multiplyHermitianMatrixKet matrix (Ket vector) =
     HermitianMatrix.multiplyMatrixVector matrix vector
+        |> Result.map Ket
+
+
+{-| Multiply a Vector by a Matrix
+-}
+multiplyInvertableMatrixKet :
+    Vector.InnerProductSpace a
+    -> InvertableMatrix.InvertableMatrix a
+    -> Ket a
+    -> Result String (Ket a)
+multiplyInvertableMatrixKet innerProductSpace matrix (Ket vector) =
+    InvertableMatrix.multiplyMatrixVector innerProductSpace matrix vector
         |> Result.map Ket
 
 
