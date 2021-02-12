@@ -22,7 +22,7 @@ module Quantum exposing
     , expectedValue
     , varianceHermitianOperator
     , getAt
-    , cNOT, equal, toffoli
+    , cNOT, equal, fredkin, toffoli
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -223,6 +223,22 @@ x =
         |> InvertableMatrix.InvertableMatrix
 
 
+{-| controlled-NOT Operation
+-}
+cNOT : InvertableMatrix.InvertableMatrix Float
+cNOT =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0 ])
+        ]
+        |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+
+
 {-| Toffoli Operation
 -}
 toffoli : InvertableMatrix.InvertableMatrix Float
@@ -243,15 +259,19 @@ toffoli =
         |> InvertableMatrix.InvertableMatrix
 
 
-{-| controlled-NOT Operation
+{-| Fredkin Operation
 -}
-cNOT : InvertableMatrix.InvertableMatrix Float
-cNOT =
+fredkin : InvertableMatrix.InvertableMatrix Float
+fredkin =
     Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0 ])
+        [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0, 0, 0, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0, 0, 0, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0, 0, 0, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1, 0, 0, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 1, 0, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 1, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 1, 0, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 0, 1 ])
         ]
         |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
         |> SquareMatrix.SquareMatrix
