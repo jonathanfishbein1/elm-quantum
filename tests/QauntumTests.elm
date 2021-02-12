@@ -17,6 +17,15 @@ import Test
 import Vector
 
 
+boolToInt : Bool -> Int
+boolToInt bool =
+    if bool == True then
+        1
+
+    else
+        0
+
+
 suite : Test.Test
 suite =
     Test.describe "Quantum Tests"
@@ -103,23 +112,38 @@ suite =
                 in
                 Quantum.variance ket hermitianMatrix
                     |> Expect.equal (Result.Ok 0.25)
-        , Test.test
-            "tests Not gate 0 initial value"
+        , Test.fuzz
+            Fuzz.bool
+            "tests Not gate"
           <|
-            \_ ->
+            \valOne ->
                 let
                     ket =
                         Quantum.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
-                                    [ 1
-                                    , 0
+                                    [ boolToInt valOne
+                                        |> toFloat
+                                    , boolToInt (not valOne)
+                                        |> toFloat
+                                    ]
+                                )
+                            )
+
+                    expected =
+                        Quantum.Ket
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ boolToInt (not valOne)
+                                        |> toFloat
+                                    , boolToInt valOne
+                                        |> toFloat
                                     ]
                                 )
                             )
                 in
                 Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.x ket
-                    |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 0, 1 ]))))
+                    |> Expect.equal (Result.Ok expected)
         , Test.test
             "tests Not gate 1 initial value"
           <|
@@ -129,12 +153,14 @@ suite =
                         Quantum.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
-                                    [ 0
-                                    , 1
+                                    [ 1
+                                    , 0
+                                    , 0
+                                    , 0
                                     ]
                                 )
                             )
                 in
-                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.x ket
-                    |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 1, 0 ]))))
+                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
+                    |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 1, 0, 0, 0 ]))))
         ]

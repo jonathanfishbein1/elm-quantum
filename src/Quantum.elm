@@ -232,7 +232,6 @@ cNOT =
         , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1 ])
         , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0 ])
         ]
-        |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -252,7 +251,6 @@ toffoli =
         , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 0, 1 ])
         , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 1, 0 ])
         ]
-        |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
