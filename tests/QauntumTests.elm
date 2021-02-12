@@ -145,7 +145,7 @@ suite =
                 Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.x ket
                     |> Expect.equal (Result.Ok expected)
         , Test.test
-            "tests Not gate 1 initial value"
+            "tests Not gate 00"
           <|
             \_ ->
                 let
@@ -163,4 +163,61 @@ suite =
                 in
                 Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 1, 0, 0, 0 ]))))
+        , Test.test
+            "tests Not gate 01"
+          <|
+            \_ ->
+                let
+                    ket =
+                        Quantum.Ket
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ 0
+                                    , 1
+                                    , 0
+                                    , 0
+                                    ]
+                                )
+                            )
+                in
+                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
+                    |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 0, 1, 0, 0 ]))))
+        , Test.test
+            "tests Not gate 10"
+          <|
+            \_ ->
+                let
+                    ket =
+                        Quantum.Ket
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ 0
+                                    , 0
+                                    , 1
+                                    , 0
+                                    ]
+                                )
+                            )
+                in
+                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
+                    |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 0, 0, 0, 1 ]))))
+        , Test.test
+            "tests Not gate 11"
+          <|
+            \_ ->
+                let
+                    ket =
+                        Quantum.Ket
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ 0
+                                    , 0
+                                    , 0
+                                    , 1
+                                    ]
+                                )
+                            )
+                in
+                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
+                    |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 0, 0, 1, 0 ]))))
         ]
