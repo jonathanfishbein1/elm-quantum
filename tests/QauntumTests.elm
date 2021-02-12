@@ -104,7 +104,7 @@ suite =
                 Quantum.variance ket hermitianMatrix
                     |> Expect.equal (Result.Ok 0.25)
         , Test.test
-            "tests Not gate"
+            "tests Not gate 0 initial value"
           <|
             \_ ->
                 let
@@ -120,4 +120,21 @@ suite =
                 in
                 Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.x ket
                     |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 0, 1 ]))))
+        , Test.test
+            "tests Not gate 1 initial value"
+          <|
+            \_ ->
+                let
+                    ket =
+                        Quantum.Ket
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ 0
+                                    , 1
+                                    ]
+                                )
+                            )
+                in
+                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.x ket
+                    |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 1, 0 ]))))
         ]
