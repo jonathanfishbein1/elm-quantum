@@ -220,4 +220,27 @@ suite =
                 in
                 Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 0, 0, 1, 0 ]))))
+        , Test.test
+            "tests and gate 000"
+          <|
+            \_ ->
+                let
+                    ket =
+                        Quantum.Ket
+                            (ColumnVector.ColumnVector
+                                (Vector.Vector
+                                    [ 1
+                                    , 0
+                                    , 0
+                                    , 0
+                                    , 0
+                                    , 0
+                                    , 0
+                                    , 0
+                                    ]
+                                )
+                            )
+                in
+                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.and ket
+                    |> Expect.equal (Result.Ok (Quantum.Ket (ColumnVector.ColumnVector (Vector.Vector [ 1, 0, 0, 0, 0, 0, 0, 0 ]))))
         ]

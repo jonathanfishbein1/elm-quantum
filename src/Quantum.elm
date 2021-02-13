@@ -22,7 +22,7 @@ module Quantum exposing
     , expectedValue
     , varianceHermitianOperator
     , getAt
-    , cNOT, equal, fredkin, multiplyInvertableMatrixKet, toffoli
+    , and, cNOT, equal, fredkin, multiplyInvertableMatrixKet, toffoli
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -79,7 +79,7 @@ module Quantum exposing
 import AbelianGroup
 import ColumnVector
 import CommutativeDivisionRing
-import ComplexNumbers
+import ComplexNumbers exposing (ComplexNumber)
 import Field
 import Group
 import HermitianMatrix
@@ -89,6 +89,7 @@ import Monoid
 import NormalMatrix
 import RowVector
 import SquareMatrix
+import UnitaryMatrix exposing (UnitaryMatrix)
 import Vector
 
 
@@ -222,6 +223,56 @@ x =
         |> InvertableMatrix.InvertableMatrix
 
 
+{-| SigmaX Operation
+-}
+sigmaXReal : InvertableMatrix.InvertableMatrix Float
+sigmaXReal =
+    x
+
+
+{-| SigmaX Operation
+-}
+sigmaX : UnitaryMatrix.UnitaryMatrix Float
+sigmaX =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.one ])
+        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+        ]
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+        |> UnitaryMatrix.UnitaryMatrix
+
+
+{-| SigmaX Operation
+-}
+sigmaY : UnitaryMatrix.UnitaryMatrix Float
+sigmaY =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.conjugate ComplexNumbers.i ])
+        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.zero ])
+        ]
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+        |> UnitaryMatrix.UnitaryMatrix
+
+
+
+-- {-| SigmaX Operation
+-- -}
+-- sigmaZ : UnitaryMatrix.UnitaryMatrix Float
+-- sigmaZ =
+--     Matrix.Matrix
+--         [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+--         , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.one ])
+--         ]
+--         |> SquareMatrix.SquareMatrix
+--         |> NormalMatrix.NormalMatrix
+--         |> InvertableMatrix.InvertableMatrix
+--         |> UnitaryMatrix.UnitaryMatrix
+
+
 {-| controlled-NOT Operation
 -}
 cNOT : InvertableMatrix.InvertableMatrix Float
@@ -254,6 +305,13 @@ toffoli =
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
+
+
+{-| and Operation
+-}
+and : InvertableMatrix.InvertableMatrix Float
+and =
+    toffoli
 
 
 {-| Fredkin Operation
