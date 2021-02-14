@@ -79,17 +79,19 @@ module Quantum exposing
 import AbelianGroup
 import ColumnVector
 import CommutativeDivisionRing
-import ComplexNumbers exposing (ComplexNumber)
+import ComplexNumbers
 import Field
 import Group
 import HermitianMatrix
+import Imaginary
 import InvertableMatrix
 import Matrix
 import Monoid
 import NormalMatrix
+import Real
 import RowVector
 import SquareMatrix
-import UnitaryMatrix exposing (UnitaryMatrix)
+import UnitaryMatrix
 import Vector
 
 
@@ -169,7 +171,7 @@ ketComplex1 =
 ketComplexPlus : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplexPlus =
     add ComplexNumbers.complexField ketComplex0 ketComplex1
-        |> scalarMultiplication ComplexNumbers.complexField (ComplexNumbers.ComplexNumber (ComplexNumbers.Real (1 / Basics.sqrt 2)) (ComplexNumbers.Imaginary 0))
+        |> scalarMultiplication ComplexNumbers.complexField (ComplexNumbers.ComplexNumber (Real.Real (1 / Basics.sqrt 2)) (Imaginary.Imaginary 0))
 
 
 {-| Ket representing + state with complex numbers
@@ -177,7 +179,7 @@ ketComplexPlus =
 ketComplexMinus : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplexMinus =
     add ComplexNumbers.complexField ketComplex0 (inverse ComplexNumbers.complexSumGroup ketComplex1)
-        |> scalarMultiplication ComplexNumbers.complexField (ComplexNumbers.ComplexNumber (ComplexNumbers.Real (1 / Basics.sqrt 2)) (ComplexNumbers.Imaginary 0))
+        |> scalarMultiplication ComplexNumbers.complexField (ComplexNumbers.ComplexNumber (Real.Real (1 / Basics.sqrt 2)) (Imaginary.Imaginary 0))
 
 
 {-| Add two Kets
@@ -426,7 +428,7 @@ conjugate =
 -}
 equal : (a -> a -> Bool) -> Ket a -> Ket a -> Bool
 equal comparator (Ket vectorOne) (Ket vectorTwo) =
-    ColumnVector.equal comparator vectorOne vectorTwo
+    (ColumnVector.equal comparator).eq vectorOne vectorTwo
 
 
 varianceHermitianOperator : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String (HermitianMatrix.HermitianMatrix Float)
@@ -438,7 +440,7 @@ varianceHermitianOperator ket matrix =
     in
     expectedValue ket matrix
         |> Result.map
-            ((\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (ComplexNumbers.Real extVal) (ComplexNumbers.Imaginary 0)) identityM)
+            ((\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (Real.Real extVal) (Imaginary.Imaginary 0)) identityM)
                 >> HermitianMatrix.subtract matrix
             )
         |> Result.andThen (\dif -> HermitianMatrix.multiply dif dif)

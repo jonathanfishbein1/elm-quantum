@@ -6,10 +6,12 @@ import Expect
 import Field
 import Fuzz
 import HermitianMatrix
-import InvertableMatrix exposing (InvertableMatrix)
+import Imaginary
+import InvertableMatrix
 import Matrix
 import NormalMatrix
 import Quantum
+import Real
 import RowVector
 import SquareMatrix
 import SymmetricMatrix
@@ -67,8 +69,8 @@ suite =
                         Quantum.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
-                                    [ ComplexNumbers.ComplexNumber (ComplexNumbers.Real (Basics.sqrt 2 / 2)) (ComplexNumbers.Imaginary 0)
-                                    , ComplexNumbers.ComplexNumber (ComplexNumbers.Real 0) (ComplexNumbers.Imaginary (Basics.sqrt 2 / 2))
+                                    [ ComplexNumbers.ComplexNumber (Real.Real (Basics.sqrt 2 / 2)) (Imaginary.Imaginary 0)
+                                    , ComplexNumbers.ComplexNumber (Real.Real 0) (Imaginary.Imaginary (Basics.sqrt 2 / 2))
                                     ]
                                 )
                             )
@@ -76,7 +78,7 @@ suite =
                     hermitianMatrix =
                         Matrix.Matrix
                             [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.map negate ComplexNumbers.i ])
-                            , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.ComplexNumber (ComplexNumbers.Real 2) (ComplexNumbers.Imaginary 0) ])
+                            , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.ComplexNumber (Real.Real 2) (Imaginary.Imaginary 0) ])
                             ]
                             |> SquareMatrix.SquareMatrix
                             |> NormalMatrix.NormalMatrix
@@ -94,8 +96,8 @@ suite =
                         Quantum.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
-                                    [ ComplexNumbers.ComplexNumber (ComplexNumbers.Real (Basics.sqrt 2 / 2)) (ComplexNumbers.Imaginary 0)
-                                    , ComplexNumbers.ComplexNumber (ComplexNumbers.Real 0) (ComplexNumbers.Imaginary (Basics.sqrt 2 / 2))
+                                    [ ComplexNumbers.ComplexNumber (Real.Real (Basics.sqrt 2 / 2)) (Imaginary.Imaginary 0)
+                                    , ComplexNumbers.ComplexNumber (Real.Real 0) (Imaginary.Imaginary (Basics.sqrt 2 / 2))
                                     ]
                                 )
                             )
@@ -103,7 +105,7 @@ suite =
                     hermitianMatrix =
                         Matrix.Matrix
                             [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.map negate ComplexNumbers.i ])
-                            , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.ComplexNumber (ComplexNumbers.Real 2) (ComplexNumbers.Imaginary 0) ])
+                            , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.ComplexNumber (Real.Real 2) (Imaginary.Imaginary 0) ])
                             ]
                             |> SquareMatrix.SquareMatrix
                             |> NormalMatrix.NormalMatrix
