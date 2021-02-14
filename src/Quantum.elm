@@ -260,19 +260,18 @@ sigmaY =
         |> UnitaryMatrix.UnitaryMatrix
 
 
-
--- {-| SigmaX Operation
--- -}
--- sigmaZ : UnitaryMatrix.UnitaryMatrix Float
--- sigmaZ =
---     Matrix.Matrix
---         [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
---         , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.one ])
---         ]
---         |> SquareMatrix.SquareMatrix
---         |> NormalMatrix.NormalMatrix
---         |> InvertableMatrix.InvertableMatrix
---         |> UnitaryMatrix.UnitaryMatrix
+{-| SigmaX Operation
+-}
+sigmaZ : UnitaryMatrix.UnitaryMatrix Float
+sigmaZ =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.imaginaryAxisReflection ComplexNumbers.one ])
+        ]
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+        |> UnitaryMatrix.UnitaryMatrix
 
 
 {-| controlled-NOT Operation
