@@ -170,16 +170,16 @@ ketComplex1 =
 -}
 ketComplexPlus : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplexPlus =
-    add ComplexNumbers.complexField ketComplex0 ketComplex1
-        |> scalarMultiplication ComplexNumbers.complexField (ComplexNumbers.ComplexNumber (Real.Real (1 / Basics.sqrt 2)) (Imaginary.Imaginary 0))
+    add ComplexNumbers.field ketComplex0 ketComplex1
+        |> scalarMultiplication ComplexNumbers.field (ComplexNumbers.ComplexNumber (Real.Real (1 / Basics.sqrt 2)) Imaginary.zero)
 
 
 {-| Ket representing + state with complex numbers
 -}
 ketComplexMinus : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplexMinus =
-    add ComplexNumbers.complexField ketComplex0 (inverse ComplexNumbers.complexSumGroup ketComplex1)
-        |> scalarMultiplication ComplexNumbers.complexField (ComplexNumbers.ComplexNumber (Real.Real (1 / Basics.sqrt 2)) (Imaginary.Imaginary 0))
+    add ComplexNumbers.field ketComplex0 (inverse ComplexNumbers.sumGroup ketComplex1)
+        |> scalarMultiplication ComplexNumbers.field (ComplexNumbers.ComplexNumber (Real.Real (1 / Basics.sqrt 2)) Imaginary.zero)
 
 
 {-| Add two Kets
@@ -214,12 +214,13 @@ h =
 
 {-| NOT Operation
 -}
-x : InvertableMatrix.InvertableMatrix Float
+x : InvertableMatrix.InvertableMatrix (Real.Real Float)
 x =
     Matrix.Matrix
         [ RowVector.RowVector (Vector.Vector [ 0, 1 ])
         , RowVector.RowVector (Vector.Vector [ 1, 0 ])
         ]
+        |> Matrix.map Real.Real
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -227,7 +228,7 @@ x =
 
 {-| SigmaX Operation
 -}
-sigmaXReal : InvertableMatrix.InvertableMatrix Float
+sigmaXReal : InvertableMatrix.InvertableMatrix (Real.Real Float)
 sigmaXReal =
     x
 
@@ -276,7 +277,7 @@ sigmaZ =
 
 {-| controlled-NOT Operation
 -}
-cNOT : InvertableMatrix.InvertableMatrix Float
+cNOT : InvertableMatrix.InvertableMatrix (Real.Real Float)
 cNOT =
     Matrix.Matrix
         [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0 ])
@@ -284,6 +285,7 @@ cNOT =
         , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1 ])
         , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0 ])
         ]
+        |> Matrix.map Real.Real
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -291,7 +293,7 @@ cNOT =
 
 {-| Toffoli Operation
 -}
-toffoli : InvertableMatrix.InvertableMatrix Float
+toffoli : InvertableMatrix.InvertableMatrix (Real.Real Float)
 toffoli =
     Matrix.Matrix
         [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0, 0, 0, 0, 0 ])
@@ -303,6 +305,7 @@ toffoli =
         , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 0, 1 ])
         , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 1, 0 ])
         ]
+        |> Matrix.map Real.Real
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -310,7 +313,7 @@ toffoli =
 
 {-| and Operation
 -}
-and : InvertableMatrix.InvertableMatrix Float
+and : InvertableMatrix.InvertableMatrix (Real.Real Float)
 and =
     toffoli
 
@@ -399,7 +402,7 @@ multiplyInvertableMatrixKet innerProductSpace matrix (Ket vector) =
 expectedValue :
     Ket (ComplexNumbers.ComplexNumber Float)
     -> HermitianMatrix.HermitianMatrix Float
-    -> Result String Float
+    -> Result String (Real.Real Float)
 expectedValue ket matrix =
     multiplyHermitianMatrixKet matrix ket
         |> Result.map (conjugate >> (\(Ket (ColumnVector.ColumnVector v)) -> Bra (Matrix.Matrix [ RowVector.RowVector v ])))
@@ -439,12 +442,12 @@ varianceHermitianOperator ket matrix =
     in
     expectedValue ket matrix
         |> Result.map
-            ((\extVal -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (Real.Real extVal) (Imaginary.Imaginary 0)) identityM)
+            ((\(Real.Real extVal) -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (Real.Real extVal) Imaginary.zero) identityM)
                 >> HermitianMatrix.subtract matrix
             )
         |> Result.andThen (\dif -> HermitianMatrix.multiply dif dif)
 
 
-variance : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String Float
+variance : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String (Real.Real Float)
 variance ket matrix =
     Result.andThen (expectedValue ket) (varianceHermitianOperator ket matrix)
