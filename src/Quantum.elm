@@ -220,13 +220,14 @@ scalarMultiplication field scalar (Ket vector) =
 
 {-| Hadamard Operation
 -}
-h : InvertableMatrix.InvertableMatrix Float
+h : InvertableMatrix.InvertableMatrix (Real.Real Float)
 h =
     Matrix.Matrix
         [ RowVector.RowVector (Vector.Vector [ 1, 1 ])
         , RowVector.RowVector (Vector.Vector [ 1, -1 ])
         ]
-        |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
+        |> Matrix.map Real.Real
+        |> Matrix.scalarMultiplication Real.field (Real.Real (1 / sqrt 2))
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
