@@ -16,6 +16,7 @@ import RowVector
 import SquareMatrix
 import SymmetricMatrix
 import Test
+import UnitaryMatrix exposing (UnitaryMatrix)
 import Vector
 
 
@@ -302,4 +303,35 @@ suite =
                 in
                 Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.and ket
                     |> Expect.equal (Result.Ok expectedKet)
+        , Test.test
+            "tests and gate X^2 = I"
+          <|
+            \_ ->
+                InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.x Quantum.x
+                    |> Expect.equal (Result.Ok (InvertableMatrix.identity Real.field 2))
+        , Test.test
+            "tests and gate sigmaX^2 = I"
+          <|
+            \_ ->
+                UnitaryMatrix.multiply Quantum.sigmaX Quantum.sigmaX
+                    |> Expect.equal (Result.Ok (UnitaryMatrix.identity 2))
+        , Test.test
+            "tests and gate sigmaY^2 = I"
+          <|
+            \_ ->
+                UnitaryMatrix.multiply Quantum.sigmaY Quantum.sigmaY
+                    |> Expect.equal (Result.Ok (UnitaryMatrix.identity 2))
+        , Test.test
+            "tests and gate sigmaZ^2 = I"
+          <|
+            \_ ->
+                let
+                    sigmaZSquared =
+                        UnitaryMatrix.multiply Quantum.sigmaZ Quantum.sigmaZ
+                            |> Result.withDefault Quantum.sigmaZ
+
+                    i =
+                        UnitaryMatrix.identity 2
+                in
+                Expect.true "sigmaZ^2 = I" (UnitaryMatrix.equal.eq sigmaZSquared i)
         ]

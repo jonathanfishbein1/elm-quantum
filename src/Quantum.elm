@@ -22,7 +22,7 @@ module Quantum exposing
     , expectedValue
     , varianceHermitianOperator
     , getAt
-    , and, cNOT, equal, fredkin, multiplyInvertableMatrixKet, toffoli
+    , and, cNOT, equal, fredkin, multiplyInvertableMatrixKet, sigmaX, sigmaY, sigmaZ, toffoli
     )
 
 {-| Quantum Computing Simulator in Elm
