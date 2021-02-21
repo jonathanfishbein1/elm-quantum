@@ -302,7 +302,7 @@ sigmaX =
 sigmaY : UnitaryMatrix.UnitaryMatrix Float
 sigmaY =
     Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.conjugate ComplexNumbers.i ])
+        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.negativeI ])
         , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.zero ])
         ]
         |> SquareMatrix.SquareMatrix
@@ -317,7 +317,7 @@ sigmaZ : UnitaryMatrix.UnitaryMatrix Float
 sigmaZ =
     Matrix.Matrix
         [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
-        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.imaginaryAxisReflection ComplexNumbers.one ])
+        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.negativeOne ])
         ]
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
