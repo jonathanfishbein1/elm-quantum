@@ -124,46 +124,66 @@ probabilityOfState innerProductSpace (Ket kt) (Bra br) =
 
 {-| Ket representing zero state
 -}
-ket0 : Ket Float
+ket0 : Ket (Real.Real Float)
 ket0 =
-    Ket (ColumnVector.ColumnVector (Vector.Vector [ 1, 0 ]))
+    Vector.Vector
+        [ Real.one
+        , Real.zero
+        ]
+        |> ColumnVector.ColumnVector
+        |> Ket
 
 
 {-| Ket representing one state
 -}
-ket1 : Ket Float
+ket1 : Ket (Real.Real Float)
 ket1 =
-    Ket (ColumnVector.ColumnVector (Vector.Vector [ 0, 1 ]))
+    Vector.Vector
+        [ Real.zero
+        , Real.one
+        ]
+        |> ColumnVector.ColumnVector
+        |> Ket
 
 
 {-| Ket representing + state
 -}
-ketPlus : Ket Float
+ketPlus : Ket (Real.Real Float)
 ketPlus =
-    add Field.float ket0 ket1
-        |> scalarMultiplication Field.float (1 / Basics.sqrt 2)
+    add Real.field ket0 ket1
+        |> scalarMultiplication Real.field (Real.Real (1 / Basics.sqrt 2))
 
 
 {-| Ket representing + state
 -}
-ketMinus : Ket Float
+ketMinus : Ket (Real.Real Float)
 ketMinus =
-    add Field.float ket0 (inverse Group.numberSum ket1)
-        |> scalarMultiplication Field.float (1 / Basics.sqrt 2)
+    add Real.field ket0 (inverse Real.sumGroup ket1)
+        |> scalarMultiplication Real.field (Real.Real (1 / Basics.sqrt 2))
 
 
 {-| Ket representing zero state with complex numbers
 -}
 ketComplex0 : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplex0 =
-    Ket (ColumnVector.ColumnVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ]))
+    Vector.Vector
+        [ ComplexNumbers.one
+        , ComplexNumbers.zero
+        ]
+        |> ColumnVector.ColumnVector
+        |> Ket
 
 
 {-| Ket representing one state with complex numbers
 -}
 ketComplex1 : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplex1 =
-    Ket (ColumnVector.ColumnVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.one ]))
+    Vector.Vector
+        [ ComplexNumbers.zero
+        , ComplexNumbers.one
+        ]
+        |> ColumnVector.ColumnVector
+        |> Ket
 
 
 {-| Ket representing + state with complex numbers
