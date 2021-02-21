@@ -247,6 +247,21 @@ x =
         |> InvertableMatrix.InvertableMatrix
 
 
+{-| square root of NOT Operation
+-}
+squareRootNot : InvertableMatrix.InvertableMatrix (Real.Real Float)
+squareRootNot =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ 1, -1 ])
+        , RowVector.RowVector (Vector.Vector [ 1, 1 ])
+        ]
+        |> Matrix.map Real.Real
+        |> Matrix.scalarMultiplication Real.field (Real.Real (1 / sqrt 2))
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+
+
 {-| SigmaX Operation
 -}
 sigmaXReal : InvertableMatrix.InvertableMatrix (Real.Real Float)
