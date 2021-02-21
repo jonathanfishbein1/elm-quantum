@@ -344,4 +344,26 @@ suite =
                             |> InvertableMatrix.scalarMultiplication Real.field (Real.Real (1 / Basics.sqrt 2))
                 in
                 Expect.equal Quantum.h xPlusZ
+        , Test.test
+            "tests X = HZH"
+          <|
+            \_ ->
+                let
+                    hZH =
+                        InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.z Quantum.h
+                            |> Result.andThen (InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.h)
+                            |> Result.withDefault Quantum.h
+                in
+                Expect.true "X = HZH" ((InvertableMatrix.equal Real.equal.eq).eq Quantum.x hZH)
+        , Test.test
+            "tests Z = HXH"
+          <|
+            \_ ->
+                let
+                    hXH =
+                        InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.x Quantum.h
+                            |> Result.andThen (InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.h)
+                            |> Result.withDefault Quantum.h
+                in
+                Expect.true "Z = HXH" ((InvertableMatrix.equal Real.equal.eq).eq Quantum.z hXH)
         ]
