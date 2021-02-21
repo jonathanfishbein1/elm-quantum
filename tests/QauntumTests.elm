@@ -7,7 +7,7 @@ import Field
 import Fuzz
 import HermitianMatrix
 import Imaginary
-import InvertableMatrix
+import InvertableMatrix exposing (InvertableMatrix)
 import Matrix
 import NormalMatrix
 import Quantum
@@ -334,4 +334,14 @@ suite =
                         UnitaryMatrix.identity 2
                 in
                 Expect.true "sigmaZ^2 = I" (UnitaryMatrix.equal.eq sigmaZSquared i)
+        , Test.test
+            "tests H = 1/sqrt 2 (X + Z)"
+          <|
+            \_ ->
+                let
+                    xPlusZ =
+                        InvertableMatrix.add Real.field Quantum.x Quantum.z
+                            |> InvertableMatrix.scalarMultiplication Real.field (Real.Real (1 / Basics.sqrt 2))
+                in
+                Expect.equal Quantum.h xPlusZ
         ]

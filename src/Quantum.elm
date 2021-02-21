@@ -22,7 +22,7 @@ module Quantum exposing
     , expectedValue
     , varianceHermitianOperator
     , getAt
-    , and, cNOT, equal, fredkin, multiplyInvertableMatrixKet, sigmaX, sigmaY, sigmaZ, toffoli
+    , and, cNOT, equal, fredkin, multiplyInvertableMatrixKet, sigmaX, sigmaY, sigmaZ, toffoli, z
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -240,6 +240,20 @@ x =
     Matrix.Matrix
         [ RowVector.RowVector (Vector.Vector [ 0, 1 ])
         , RowVector.RowVector (Vector.Vector [ 1, 0 ])
+        ]
+        |> Matrix.map Real.Real
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+
+
+{-| z Operation
+-}
+z : InvertableMatrix.InvertableMatrix (Real.Real Float)
+z =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ 1, 0 ])
+        , RowVector.RowVector (Vector.Vector [ 0, -1 ])
         ]
         |> Matrix.map Real.Real
         |> SquareMatrix.SquareMatrix
