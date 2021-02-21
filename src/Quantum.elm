@@ -443,8 +443,9 @@ map f (Ket vector) =
 conjugate :
     Ket (ComplexNumbers.ComplexNumber number)
     -> Ket (ComplexNumbers.ComplexNumber number)
-conjugate =
-    map ComplexNumbers.conjugate
+conjugate (Ket vector) =
+    ColumnVector.conjugate vector
+        |> Ket
 
 
 {-| Compare two vectors for equality using a comparator
