@@ -339,6 +339,20 @@ s =
         |> UnitaryMatrix.UnitaryMatrix
 
 
+{-| t Operation
+-}
+t : UnitaryMatrix.UnitaryMatrix Float
+t =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.eToTheIPiOver4 ])
+        ]
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+        |> UnitaryMatrix.UnitaryMatrix
+
+
 {-| controlled-NOT Operation
 -}
 cNOT : InvertableMatrix.InvertableMatrix (Real.Real Float)
