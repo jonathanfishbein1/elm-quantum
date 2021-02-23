@@ -325,6 +325,20 @@ sigmaZ =
         |> UnitaryMatrix.UnitaryMatrix
 
 
+{-| s Operation
+-}
+s : UnitaryMatrix.UnitaryMatrix Float
+s =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.i ])
+        ]
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+        |> UnitaryMatrix.UnitaryMatrix
+
+
 {-| controlled-NOT Operation
 -}
 cNOT : InvertableMatrix.InvertableMatrix (Real.Real Float)
