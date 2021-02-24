@@ -22,7 +22,7 @@ module Quantum exposing
     , expectedValue
     , varianceHermitianOperator
     , getAt
-    , and, cNOT, equal, fredkin, multiplyInvertableMatrixKet, sigmaX, sigmaY, sigmaZ, toffoli, z
+    , and, cNOT, equal, fredkin, hComplex, multiplyInvertableMatrixKet, s, sigmaX, sigmaY, sigmaZ, t, toffoli, z
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -231,6 +231,21 @@ h =
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
+
+
+{-| Hadamard Operation
+-}
+hComplex : UnitaryMatrix.UnitaryMatrix Float
+hComplex =
+    Matrix.Matrix
+        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.one ])
+        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.negativeOne ])
+        ]
+        |> SquareMatrix.SquareMatrix
+        |> NormalMatrix.NormalMatrix
+        |> InvertableMatrix.InvertableMatrix
+        |> UnitaryMatrix.UnitaryMatrix
+        |> UnitaryMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (Real.Real (1 / sqrt 2)) Imaginary.zero)
 
 
 {-| NOT Operation

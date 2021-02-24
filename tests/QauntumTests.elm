@@ -1,7 +1,7 @@
 module QauntumTests exposing (..)
 
 import ColumnVector
-import ComplexNumbers
+import ComplexNumbers exposing (ComplexNumber)
 import Expect
 import Field
 import Fuzz
@@ -366,4 +366,36 @@ suite =
                             |> Result.withDefault Quantum.h
                 in
                 Expect.true "Z = HXH" ((InvertableMatrix.equal Real.equal.eq).eq Quantum.z hXH)
+        , Test.test
+            "tests -Y = HYH"
+          <|
+            \_ ->
+                let
+                    hYH =
+                        UnitaryMatrix.multiply Quantum.sigmaY Quantum.hComplex
+                            |> Result.andThen (UnitaryMatrix.multiply Quantum.hComplex)
+                            |> Result.withDefault Quantum.hComplex
+                in
+                Expect.true "-Y = HYH" (UnitaryMatrix.equal.eq (UnitaryMatrix.scalarMultiplication ComplexNumbers.negativeOne Quantum.sigmaY) hYH)
+        , Test.test
+            "tests S = T^2"
+          <|
+            \_ ->
+                let
+                    tSquared =
+                        UnitaryMatrix.multiply Quantum.t Quantum.t
+                            |> Result.withDefault Quantum.hComplex
+                in
+                Expect.true "S = T^2" (UnitaryMatrix.equal.eq Quantum.s tSquared)
+        , Test.test
+            "tests -Y = XYX"
+          <|
+            \_ ->
+                let
+                    xYX =
+                        UnitaryMatrix.multiply Quantum.sigmaY Quantum.sigmaX
+                            |> Result.andThen (UnitaryMatrix.multiply Quantum.sigmaX)
+                            |> Result.withDefault Quantum.hComplex
+                in
+                Expect.true "-Y = XYX" (UnitaryMatrix.equal.eq (UnitaryMatrix.scalarMultiplication ComplexNumbers.negativeOne Quantum.sigmaY) xYX)
         ]
