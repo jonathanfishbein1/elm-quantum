@@ -1,13 +1,13 @@
 module QauntumTests exposing (..)
 
 import ColumnVector
-import ComplexNumbers exposing (ComplexNumber)
+import ComplexNumbers
 import Expect
 import Field
 import Fuzz
 import HermitianMatrix
 import Imaginary
-import InvertableMatrix exposing (InvertableMatrix)
+import InvertableMatrix
 import Matrix
 import NormalMatrix
 import Quantum
@@ -16,7 +16,7 @@ import RowVector
 import SquareMatrix
 import SymmetricMatrix
 import Test
-import UnitaryMatrix exposing (UnitaryMatrix)
+import UnitaryMatrix
 import Vector
 
 
