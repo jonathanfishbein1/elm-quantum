@@ -14,15 +14,30 @@ module Quantum exposing
     , sum
     , foldl
     , variance
+    , map
     , add
+    , multiplyInvertableMatrixKet
     , h
+    , hComplex
     , x
+    , squareRootNot
+    , sigmaXReal
+    , sigmaX
+    , sigmaY
+    , sigmaZ
+    , z
+    , toffoli
+    , fredkin
+    , t
+    , s
+    , cNOT
+    , and
     , probabilityOfState
     , multiplyHermitianMatrixKet
     , expectedValue
     , varianceHermitianOperator
+    , equal
     , getAt
-    , and, cNOT, equal, fredkin, hComplex, multiplyInvertableMatrixKet, s, sigmaX, sigmaY, sigmaZ, t, toffoli, z
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -53,21 +68,41 @@ module Quantum exposing
 @docs sum
 @docs foldl
 @docs variance
+@docs map
 
 
 # Binary Operations
 
 @docs add
+@docs multiplyInvertableMatrixKet
 
 
 # Quantum Operators
 
 @docs h
+@docs hComplex
 @docs x
+@docs squareRootNot
+@docs sigmaXReal
+@docs sigmaX
+@docs sigmaY
+@docs sigmaZ
+@docs z
+@docs toffoli
+@docs fredkin
+@docs t
+@docs s
+@docs cNOT
+@docs and
 @docs probabilityOfState
 @docs multiplyHermitianMatrixKet
 @docs expectedValue
 @docs varianceHermitianOperator
+
+
+# Equality
+
+@docs equal
 
 
 # Manipulation
@@ -527,6 +562,8 @@ equal comparator (Ket vectorOne) (Ket vectorTwo) =
     (ColumnVector.equal comparator).eq vectorOne vectorTwo
 
 
+{-| varianceHermitianOperator
+-}
 varianceHermitianOperator : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String (HermitianMatrix.HermitianMatrix Float)
 varianceHermitianOperator ket matrix =
     let
@@ -542,6 +579,8 @@ varianceHermitianOperator ket matrix =
         |> Result.andThen (\dif -> HermitianMatrix.multiply dif dif)
 
 
+{-| variance
+-}
 variance : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String (Real.Real Float)
 variance ket matrix =
     Result.andThen (expectedValue ket) (varianceHermitianOperator ket matrix)
