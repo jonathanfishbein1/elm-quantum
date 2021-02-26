@@ -9,6 +9,7 @@ module Quantum exposing
     , ketComplex1
     , ketComplexPlus
     , ketComplexMinus
+    , ketEmpty
     , scalarMultiplication
     , dimension
     , sum
@@ -59,6 +60,7 @@ module Quantum exposing
 @docs ketComplex1
 @docs ketComplexPlus
 @docs ketComplexMinus
+@docs ketEmpty
 
 
 # Unitary Operations
@@ -235,6 +237,14 @@ ketComplexMinus : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplexMinus =
     add ComplexNumbers.field ketComplex0 (inverse ComplexNumbers.sumGroup ketComplex1)
         |> scalarMultiplication ComplexNumbers.field (ComplexNumbers.ComplexNumber (Real.Real (1 / Basics.sqrt 2)) Imaginary.zero)
+
+
+{-| Empty ket
+-}
+ketEmpty : Ket a
+ketEmpty =
+    ColumnVector.empty
+        |> Ket
 
 
 {-| Add two Kets
