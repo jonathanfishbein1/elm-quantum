@@ -165,10 +165,10 @@ probabilityOfState innerProductSpace (Ket kt) (Bra br) =
 -}
 ket0 : Ket (Real.Real Float)
 ket0 =
-    Vector.Vector
-        [ Real.one
-        , Real.zero
-        ]
+    [ Real.one
+    , Real.zero
+    ]
+        |> Vector.Vector
         |> ColumnVector.ColumnVector
         |> Ket
 
@@ -177,10 +177,10 @@ ket0 =
 -}
 ket1 : Ket (Real.Real Float)
 ket1 =
-    Vector.Vector
-        [ Real.zero
-        , Real.one
-        ]
+    [ Real.zero
+    , Real.one
+    ]
+        |> Vector.Vector
         |> ColumnVector.ColumnVector
         |> Ket
 
@@ -205,10 +205,10 @@ ketMinus =
 -}
 ketComplex0 : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplex0 =
-    Vector.Vector
-        [ ComplexNumbers.one
-        , ComplexNumbers.zero
-        ]
+    [ ComplexNumbers.one
+    , ComplexNumbers.zero
+    ]
+        |> Vector.Vector
         |> ColumnVector.ColumnVector
         |> Ket
 
@@ -217,10 +217,10 @@ ketComplex0 =
 -}
 ketComplex1 : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplex1 =
-    Vector.Vector
-        [ ComplexNumbers.zero
-        , ComplexNumbers.one
-        ]
+    [ ComplexNumbers.zero
+    , ComplexNumbers.one
+    ]
+        |> Vector.Vector
         |> ColumnVector.ColumnVector
         |> Ket
 
@@ -269,10 +269,10 @@ scalarMultiplication field scalar (Ket vector) =
 -}
 h : InvertableMatrix.InvertableMatrix (Real.Real Float)
 h =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ 1, 1 ])
-        , RowVector.RowVector (Vector.Vector [ 1, -1 ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ 1, 1 ])
+    , RowVector.RowVector (Vector.Vector [ 1, -1 ])
+    ]
+        |> Matrix.Matrix
         |> Matrix.map Real.Real
         |> Matrix.scalarMultiplication Real.field (Real.Real (1 / sqrt 2))
         |> SquareMatrix.SquareMatrix
@@ -284,10 +284,10 @@ h =
 -}
 hComplex : UnitaryMatrix.UnitaryMatrix Float
 hComplex =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.one ])
-        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.negativeOne ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.one ])
+    , RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.negativeOne ])
+    ]
+        |> Matrix.Matrix
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -299,10 +299,10 @@ hComplex =
 -}
 x : InvertableMatrix.InvertableMatrix (Real.Real Float)
 x =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ 0, 1 ])
-        , RowVector.RowVector (Vector.Vector [ 1, 0 ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ 0, 1 ])
+    , RowVector.RowVector (Vector.Vector [ 1, 0 ])
+    ]
+        |> Matrix.Matrix
         |> Matrix.map Real.Real
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
@@ -313,10 +313,10 @@ x =
 -}
 z : InvertableMatrix.InvertableMatrix (Real.Real Float)
 z =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ 1, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, -1 ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ 1, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, -1 ])
+    ]
+        |> Matrix.Matrix
         |> Matrix.map Real.Real
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
@@ -327,10 +327,10 @@ z =
 -}
 squareRootNot : InvertableMatrix.InvertableMatrix (Real.Real Float)
 squareRootNot =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ 1, -1 ])
-        , RowVector.RowVector (Vector.Vector [ 1, 1 ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ 1, -1 ])
+    , RowVector.RowVector (Vector.Vector [ 1, 1 ])
+    ]
+        |> Matrix.Matrix
         |> Matrix.map Real.Real
         |> Matrix.scalarMultiplication Real.field (Real.Real (1 / sqrt 2))
         |> SquareMatrix.SquareMatrix
@@ -349,10 +349,10 @@ sigmaXReal =
 -}
 sigmaX : UnitaryMatrix.UnitaryMatrix Float
 sigmaX =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.one ])
-        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.one ])
+    , RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+    ]
+        |> Matrix.Matrix
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -363,10 +363,10 @@ sigmaX =
 -}
 sigmaY : UnitaryMatrix.UnitaryMatrix Float
 sigmaY =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.negativeI ])
-        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.zero ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.negativeI ])
+    , RowVector.RowVector (Vector.Vector [ ComplexNumbers.i, ComplexNumbers.zero ])
+    ]
+        |> Matrix.Matrix
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -377,10 +377,10 @@ sigmaY =
 -}
 sigmaZ : UnitaryMatrix.UnitaryMatrix Float
 sigmaZ =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
-        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.negativeOne ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+    , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.negativeOne ])
+    ]
+        |> Matrix.Matrix
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -391,10 +391,10 @@ sigmaZ =
 -}
 s : UnitaryMatrix.UnitaryMatrix Float
 s =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
-        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.i ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+    , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.i ])
+    ]
+        |> Matrix.Matrix
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -405,10 +405,10 @@ s =
 -}
 t : UnitaryMatrix.UnitaryMatrix Float
 t =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
-        , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.eToTheIPiOver4 ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ ComplexNumbers.one, ComplexNumbers.zero ])
+    , RowVector.RowVector (Vector.Vector [ ComplexNumbers.zero, ComplexNumbers.eToTheIPiOver4 ])
+    ]
+        |> Matrix.Matrix
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
         |> InvertableMatrix.InvertableMatrix
@@ -419,12 +419,12 @@ t =
 -}
 cNOT : InvertableMatrix.InvertableMatrix (Real.Real Float)
 cNOT =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0 ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0 ])
+    ]
+        |> Matrix.Matrix
         |> Matrix.map Real.Real
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
@@ -435,16 +435,16 @@ cNOT =
 -}
 toffoli : InvertableMatrix.InvertableMatrix (Real.Real Float)
 toffoli =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0, 0, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0, 0, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0, 0, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1, 0, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 1, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 1, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 0, 1 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 1, 0 ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0, 0, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0, 0, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0, 0, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1, 0, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 1, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 1, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 0, 1 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 1, 0 ])
+    ]
+        |> Matrix.Matrix
         |> Matrix.map Real.Real
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
@@ -462,16 +462,16 @@ and =
 -}
 fredkin : InvertableMatrix.InvertableMatrix Float
 fredkin =
-    Matrix.Matrix
-        [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0, 0, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0, 0, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0, 0, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1, 0, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 1, 0, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 1, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 1, 0, 0 ])
-        , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 0, 1 ])
-        ]
+    [ RowVector.RowVector (Vector.Vector [ 1, 0, 0, 0, 0, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 1, 0, 0, 0, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 1, 0, 0, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 1, 0, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 1, 0, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 1, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 1, 0, 0 ])
+    , RowVector.RowVector (Vector.Vector [ 0, 0, 0, 0, 0, 0, 0, 1 ])
+    ]
+        |> Matrix.Matrix
         |> Matrix.scalarMultiplication Field.float (1 / sqrt 2)
         |> SquareMatrix.SquareMatrix
         |> NormalMatrix.NormalMatrix
