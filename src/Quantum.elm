@@ -39,6 +39,7 @@ module Quantum exposing
     , varianceHermitianOperator
     , equal
     , getAt
+    , setAt
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -110,6 +111,7 @@ module Quantum exposing
 # Manipulation
 
 @docs getAt
+@docs setAt
 
 -}
 
@@ -489,6 +491,14 @@ inverse group (Ket vector) =
 getAt : Int -> Ket a -> Maybe a
 getAt index (Ket vector) =
     ColumnVector.getAt index vector
+
+
+{-| Set the value in a Ket at the specified index
+-}
+setAt : Int -> a -> Ket a -> Ket a
+setAt index element (Ket list) =
+    ColumnVector.setAt index element list
+        |> Ket
 
 
 {-| Count of number of elements in a Ket
