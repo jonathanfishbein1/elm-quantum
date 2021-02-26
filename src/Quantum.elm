@@ -9,6 +9,7 @@ module Quantum exposing
     , ketComplex1
     , ketComplexPlus
     , ketComplexMinus
+    , ketEmpty
     , scalarMultiplication
     , dimension
     , sum
@@ -38,6 +39,7 @@ module Quantum exposing
     , varianceHermitianOperator
     , equal
     , getAt
+    , setAt
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -59,6 +61,7 @@ module Quantum exposing
 @docs ketComplex1
 @docs ketComplexPlus
 @docs ketComplexMinus
+@docs ketEmpty
 
 
 # Unitary Operations
@@ -108,6 +111,7 @@ module Quantum exposing
 # Manipulation
 
 @docs getAt
+@docs setAt
 
 -}
 
@@ -235,6 +239,14 @@ ketComplexMinus : Ket (ComplexNumbers.ComplexNumber Float)
 ketComplexMinus =
     add ComplexNumbers.field ketComplex0 (inverse ComplexNumbers.sumGroup ketComplex1)
         |> scalarMultiplication ComplexNumbers.field (ComplexNumbers.ComplexNumber (Real.Real (1 / Basics.sqrt 2)) Imaginary.zero)
+
+
+{-| Empty ket
+-}
+ketEmpty : Ket a
+ketEmpty =
+    ColumnVector.empty
+        |> Ket
 
 
 {-| Add two Kets
@@ -479,6 +491,14 @@ inverse group (Ket vector) =
 getAt : Int -> Ket a -> Maybe a
 getAt index (Ket vector) =
     ColumnVector.getAt index vector
+
+
+{-| Set the value in a Ket at the specified index
+-}
+setAt : Int -> a -> Ket a -> Ket a
+setAt index element (Ket list) =
+    ColumnVector.setAt index element list
+        |> Ket
 
 
 {-| Count of number of elements in a Ket
