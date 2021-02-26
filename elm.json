@@ -10,8 +10,8 @@
     "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {
         "elm/core": "1.0.0 <= v < 2.0.0",
-        "jonathanfishbein1/elm-numbers": "4.0.0 <= v < 5.0.0",
-        "jonathanfishbein1/linear-algebra": "26.0.0 <= v < 27.0.0",
+        "jonathanfishbein1/elm-numbers": "5.0.0 <= v < 6.0.0",
+        "jonathanfishbein1/linear-algebra": "26.0.1 <= v < 27.0.0",
         "jonathanfishbein1/numeric-typeclasses": "4.0.0 <= v < 5.0.0"
     },
     "test-dependencies": {
