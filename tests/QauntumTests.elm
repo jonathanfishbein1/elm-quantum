@@ -149,7 +149,7 @@ suite =
                                 )
                             )
                 in
-                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.x ket
+                Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.x ket
                     |> Expect.equal (Result.Ok expected)
         , Test.test
             "tests Not gate 00"
@@ -177,7 +177,7 @@ suite =
                             |> ColumnVector.ColumnVector
                             |> Quantum.Ket
                 in
-                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
+                Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok expectedKet)
         , Test.test
             "tests Not gate 01"
@@ -206,7 +206,7 @@ suite =
                             |> ColumnVector.map Real.Real
                             |> Quantum.Ket
                 in
-                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
+                Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok expectedKet)
         , Test.test
             "tests Not gate 10"
@@ -235,7 +235,7 @@ suite =
                             |> ColumnVector.map Real.Real
                             |> Quantum.Ket
                 in
-                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
+                Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok expectedKet)
         , Test.test
             "tests Not gate 11"
@@ -264,7 +264,7 @@ suite =
                             |> ColumnVector.map Real.Real
                             |> Quantum.Ket
                 in
-                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.cNOT ket
+                Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok expectedKet)
         , Test.test
             "tests and gate 000"
@@ -301,13 +301,13 @@ suite =
                             |> ColumnVector.map Real.Real
                             |> Quantum.Ket
                 in
-                Quantum.multiplyInvertableMatrixKet Vector.realInnerProductSpace Quantum.and ket
+                Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.and ket
                     |> Expect.equal (Result.Ok expectedKet)
         , Test.test
             "tests and gate X^2 = I"
           <|
             \_ ->
-                InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.x Quantum.x
+                InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.x Quantum.x
                     |> Expect.equal (Result.Ok (InvertableMatrix.identity Real.field 2))
         , Test.test
             "tests and gate sigmaX^2 = I"
@@ -350,8 +350,8 @@ suite =
             \_ ->
                 let
                     hZH =
-                        InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.z Quantum.h
-                            |> Result.andThen (InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.h)
+                        InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.z Quantum.h
+                            |> Result.andThen (InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.h)
                             |> Result.withDefault Quantum.h
                 in
                 Expect.true "X = HZH" ((InvertableMatrix.equal Real.equal.eq).eq Quantum.x hZH)
@@ -361,8 +361,8 @@ suite =
             \_ ->
                 let
                     hXH =
-                        InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.x Quantum.h
-                            |> Result.andThen (InvertableMatrix.multiply Vector.realInnerProductSpace Quantum.h)
+                        InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.x Quantum.h
+                            |> Result.andThen (InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.h)
                             |> Result.withDefault Quantum.h
                 in
                 Expect.true "Z = HXH" ((InvertableMatrix.equal Real.equal.eq).eq Quantum.z hXH)
