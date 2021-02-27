@@ -148,7 +148,7 @@ type Bra a
 
 {-| Calculate the probability of end state, the Bra, with given start state, the Ket
 -}
-probabilityOfState : Vector.InnerProductSpace a -> Ket a -> Bra a -> Result String a
+probabilityOfState : RowVector.InnerProductSpace a -> Ket a -> Bra a -> Result String a
 probabilityOfState innerProductSpace (Ket kt) (Bra br) =
     let
         (Field.Field (CommutativeDivisionRing.CommutativeDivisionRing commutativeDivisionRing)) =
@@ -536,7 +536,7 @@ multiplyHermitianMatrixKet matrix (Ket vector) =
 {-| Multiply a Vector by a Matrix
 -}
 multiplyInvertableMatrixKet :
-    Vector.InnerProductSpace a
+    RowVector.InnerProductSpace a
     -> InvertableMatrix.InvertableMatrix a
     -> Ket a
     -> Result String (Ket a)
@@ -554,7 +554,7 @@ expectedValue :
 expectedValue ket matrix =
     multiplyHermitianMatrixKet matrix ket
         |> Result.map (conjugate >> (\(Ket (ColumnVector.ColumnVector v)) -> Bra (Matrix.Matrix [ RowVector.RowVector v ])))
-        |> Result.andThen (probabilityOfState Vector.complexInnerProductSpace ket)
+        |> Result.andThen (probabilityOfState RowVector.complexInnerProductSpace ket)
         |> Result.map ComplexNumbers.real
 
 
