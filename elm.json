@@ -3,7 +3,7 @@
     "name": "jonathanfishbein1/elm-quantum",
     "summary": "Elm Quantum Simulator",
     "license": "MIT",
-    "version": "5.1.1",
+    "version": "5.1.2",
     "exposed-modules": [
         "Quantum"
     ],
