@@ -118,6 +118,8 @@ module Quantum exposing
 import AbelianGroup
 import ColumnVector
 import CommutativeDivisionRing
+import CommutativeMonoid
+import CommutativeSemigroup
 import ComplexNumbers
 import Field
 import Group
@@ -129,6 +131,7 @@ import Monoid
 import NormalMatrix
 import Real
 import RowVector
+import Semigroup
 import SquareMatrix
 import UnitaryMatrix
 import Vector
@@ -138,6 +141,25 @@ import Vector
 -}
 type Ket a
     = Ket (ColumnVector.ColumnVector a)
+
+
+{-| Type to represent a Vector Space
+-}
+type alias VectorSpace a =
+    { abelianGroup : AbelianGroup.AbelianGroup (Ket a)
+    , vectorScalarMultiplication : a -> Ket a -> Ket a
+    , field : Field.Field a
+    }
+
+
+{-| Type to represent an Inner Product Space
+-}
+type alias InnerProductSpace a =
+    { vectorSpace : VectorSpace a
+    , innerProduct : Ket a -> Ket a -> a
+    , length : Ket a -> Real.Real Float
+    , distance : Ket a -> Ket a -> Real.Real Float
+    }
 
 
 {-| Bra Type
@@ -604,3 +626,174 @@ varianceHermitianOperator ket matrix =
 variance : Ket (ComplexNumbers.ComplexNumber Float) -> HermitianMatrix.HermitianMatrix Float -> Result String (Real.Real Float)
 variance ket matrix =
     Result.andThen (expectedValue ket) (varianceHermitianOperator ket matrix)
+
+
+{-| Calculate the dot product of two Vectors
+-}
+dotProduct : Field.Field a -> Ket a -> Ket a -> a
+dotProduct field (Ket vectorOne) (Ket vectorTwo) =
+    ColumnVector.dotProduct field vectorOne vectorTwo
+
+
+{-| Calculate distance between two vectors
+-}
+distanceReal : Ket (Real.Real Float) -> Ket (Real.Real Float) -> Real.Real Float
+distanceReal (Ket vectorOne) (Ket vectorTwo) =
+    ColumnVector.distanceReal vectorOne vectorTwo
+
+
+{-| Calculate distance between two vectors
+-}
+distanceComplex : Ket (ComplexNumbers.ComplexNumber Float) -> Ket (ComplexNumbers.ComplexNumber Float) -> Real.Real Float
+distanceComplex (Ket vectorOne) (Ket vectorTwo) =
+    ColumnVector.distanceComplex vectorOne vectorTwo
+
+
+{-| Calculate the length of a Real valued Vector
+-}
+lengthReal : Ket (Real.Real Float) -> Real.Real Float
+lengthReal (Ket vector) =
+    ColumnVector.lengthReal vector
+
+
+{-| Calculate the length of a Complex valued Vector
+-}
+lengthComplex : Ket (ComplexNumbers.ComplexNumber Float) -> Real.Real Float
+lengthComplex (Ket vector) =
+    ColumnVector.lengthComplex vector
+
+
+{-| Semigroup instance for a real valued Internal.Vector.
+-}
+realSemigroup : Semigroup.Semigroup (Ket (Real.Real Float))
+realSemigroup =
+    add Real.field
+
+
+{-| Semigroup instance for a complex valued Internal.Vector.
+-}
+complexSemigroup : Semigroup.Semigroup (Ket (ComplexNumbers.ComplexNumber Float))
+complexSemigroup =
+    add ComplexNumbers.field
+
+
+{-| Commutative Semigroup instance for a real valued Internal.Vector.
+-}
+realCommutativeSemigroup : CommutativeSemigroup.CommutativeSemigroup (Ket (Real.Real Float))
+realCommutativeSemigroup =
+    CommutativeSemigroup.CommutativeSemigroup realSemigroup
+
+
+{-| Commutative Semigroup instance for a complex valued Internal.Vector.
+-}
+complexCommutativeSemigroup : CommutativeSemigroup.CommutativeSemigroup (Ket (ComplexNumbers.ComplexNumber Float))
+complexCommutativeSemigroup =
+    CommutativeSemigroup.CommutativeSemigroup complexSemigroup
+
+
+{-| Monoid instance for a real valued Internal.Vector.
+-}
+realMonoid : Monoid.Monoid (Ket (Real.Real Float))
+realMonoid =
+    Monoid.semigroupAndIdentity realSemigroup ketEmpty
+
+
+{-| Monoid instance for a complex valued Internal.Vector.
+-}
+complexMonoid : Monoid.Monoid (Ket (ComplexNumbers.ComplexNumber Float))
+complexMonoid =
+    Monoid.semigroupAndIdentity complexSemigroup ketEmpty
+
+
+{-| Commutative Monoid instance for a real valued Internal.Vector.
+-}
+realCommutativeMonoid : CommutativeMonoid.CommutativeMonoid (Ket (Real.Real Float))
+realCommutativeMonoid =
+    CommutativeMonoid.CommutativeMonoid realMonoid
+
+
+{-| Commutative Monoid instance for a complex valued Internal.Vector.
+-}
+complexCommutativeMonoid : CommutativeMonoid.CommutativeMonoid (Ket (ComplexNumbers.ComplexNumber Float))
+complexCommutativeMonoid =
+    CommutativeMonoid.CommutativeMonoid complexMonoid
+
+
+{-| Group instance for a real valued Internal.Vector.
+-}
+realGroup : Group.Group (Ket (Real.Real Float))
+realGroup =
+    { monoid = realMonoid
+    , inverse = map Real.sumGroup.inverse
+    }
+
+
+{-| Group instance for a complex valued Internal.Vector.
+-}
+complexGroup : Group.Group (Ket (ComplexNumbers.ComplexNumber Float))
+complexGroup =
+    { monoid = complexMonoid
+    , inverse = map ComplexNumbers.sumGroup.inverse
+    }
+
+
+{-| Abelian Group instance for a real valued Internal.Vector.
+-}
+realAbelianGroup : AbelianGroup.AbelianGroup (Ket (Real.Real Float))
+realAbelianGroup =
+    AbelianGroup.AbelianGroup
+        { monoid = realMonoid
+        , inverse = realGroup.inverse
+        }
+
+
+{-| Group instance for a complex valued Internal.Vector.
+-}
+complexAbelianGroup : AbelianGroup.AbelianGroup (Ket (ComplexNumbers.ComplexNumber Float))
+complexAbelianGroup =
+    AbelianGroup.AbelianGroup
+        { monoid = complexMonoid
+        , inverse = complexGroup.inverse
+        }
+
+
+{-| Real Numbered Vector Space
+-}
+realVectorSpace : VectorSpace (Real.Real Float)
+realVectorSpace =
+    { abelianGroup = realAbelianGroup
+    , vectorScalarMultiplication = scalarMultiplication Real.field
+    , field = Real.field
+    }
+
+
+{-| Complex Numbered Vector Space
+-}
+complexVectorSpace : VectorSpace (ComplexNumbers.ComplexNumber Float)
+complexVectorSpace =
+    { abelianGroup = complexAbelianGroup
+    , vectorScalarMultiplication = scalarMultiplication ComplexNumbers.field
+    , field = ComplexNumbers.field
+    }
+
+
+{-| Real Numbered Inner Product Space
+-}
+realInnerProductSpace : InnerProductSpace (Real.Real Float)
+realInnerProductSpace =
+    { vectorSpace = realVectorSpace
+    , innerProduct = dotProduct Real.field
+    , length = lengthReal
+    , distance = distanceReal
+    }
+
+
+{-| Complex Numbered Inner Product Space
+-}
+complexInnerProductSpace : InnerProductSpace (ComplexNumbers.ComplexNumber Float)
+complexInnerProductSpace =
+    { vectorSpace = complexVectorSpace
+    , innerProduct = dotProduct ComplexNumbers.field
+    , length = lengthComplex
+    , distance = distanceComplex
+    }
