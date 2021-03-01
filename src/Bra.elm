@@ -1,47 +1,10 @@
-module Bra exposing (Bra(..))
+module Bra exposing
+    ( getAt
+    , setAt
+    , Bra(..)
+    )
 
 {-| Quantum Computing Simulator in Elm
-
-
-# Types
-
-
-# Values
-
-@docs ket0
-@docs ket1
-@docs ketPlus
-@docs ketMinus
-@docs ketComplex0
-@docs ketComplex1
-@docs ketComplexPlus
-@docs ketComplexMinus
-@docs ketEmpty
-
-
-# Unitary Operations
-
-@docs scalarMultiplication
-@docs dimension
-@docs sum
-@docs foldl
-@docs variance
-@docs map
-@docs lengthReal
-@docs lengthComplex
-@docs normaliseReal
-@docs normaliseComplex
-
-
-# Binary Operations
-
-@docs add
-@docs multiplyInvertableMatrixKet
-
-
-# Equality
-
-@docs equal
 
 
 # Manipulation
@@ -58,3 +21,18 @@ import Matrix
 -}
 type Bra a
     = Bra (Matrix.Matrix a)
+
+
+{-| Get the value in a matrix at the specified row and column
+-}
+getAt : ( Int, Int ) -> Bra a -> Maybe a
+getAt ( rowIndex, columnIndex ) (Bra matrix) =
+    Matrix.getAt ( rowIndex, columnIndex ) matrix
+
+
+{-| Set the value in a Matrix at the specified row and column
+-}
+setAt : ( Int, Int ) -> a -> Bra a -> Bra a
+setAt ( rowIndex, columnIndex ) element (Bra matrix) =
+    Matrix.setAt ( rowIndex, columnIndex ) element matrix
+        |> Bra
