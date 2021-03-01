@@ -29,6 +29,8 @@ module Ket exposing
 
 # Types
 
+Ket
+
 
 # Values
 
@@ -61,6 +63,9 @@ module Ket exposing
 
 @docs add
 @docs multiplyInvertableMatrixKet
+
+
+# Equality
 
 
 # Equality
