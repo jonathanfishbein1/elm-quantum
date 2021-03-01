@@ -16,6 +16,8 @@ module Quantum exposing
     , foldl
     , variance
     , map
+    , lengthReal
+    , lengthComplex
     , add
     , multiplyInvertableMatrixKet
     , h
@@ -72,6 +74,8 @@ module Quantum exposing
 @docs foldl
 @docs variance
 @docs map
+@docs lengthReal
+@docs lengthComplex
 
 
 # Binary Operations
