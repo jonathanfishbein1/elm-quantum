@@ -18,6 +18,8 @@ module Quantum exposing
     , map
     , lengthReal
     , lengthComplex
+    , normaliseReal
+    , normaliseComplex
     , add
     , multiplyInvertableMatrixKet
     , h
@@ -76,6 +78,8 @@ module Quantum exposing
 @docs map
 @docs lengthReal
 @docs lengthComplex
+@docs normaliseReal
+@docs normaliseComplex
 
 
 # Binary Operations
@@ -665,6 +669,22 @@ lengthReal (Ket vector) =
 lengthComplex : Ket (ComplexNumbers.ComplexNumber Float) -> Real.Real Float
 lengthComplex (Ket vector) =
     ColumnVector.lengthComplex vector
+
+
+{-| Adjust a real valued column vector so that its length is exactly one
+-}
+normaliseReal : Ket (Real.Real Float) -> Ket (Real.Real Float)
+normaliseReal (Ket v) =
+    ColumnVector.normaliseReal v
+        |> Ket
+
+
+{-| Adjust a complex valued column vector so that its length is exactly one
+-}
+normaliseComplex : Ket (ComplexNumbers.ComplexNumber Float) -> Ket (ComplexNumbers.ComplexNumber Float)
+normaliseComplex (Ket v) =
+    ColumnVector.normaliseComplex v
+        |> Ket
 
 
 {-| Semigroup instance for a real valued Internal.Vector.
