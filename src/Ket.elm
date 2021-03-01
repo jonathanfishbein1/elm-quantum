@@ -1,5 +1,8 @@
 module Ket exposing
-    ( ket0
+    ( Ket(..)
+    , VectorSpace
+    , InnerProductSpace
+    , ket0
     , ket1
     , ketPlus
     , ketMinus
@@ -17,11 +20,11 @@ module Ket exposing
     , lengthComplex
     , normaliseReal
     , normaliseComplex
+    , conjugate
     , add
     , equal
     , getAt
     , setAt
-    , InnerProductSpace, Ket(..), VectorSpace, conjugate
     )
 
 {-| Quantum Computing Simulator in Elm
@@ -29,7 +32,9 @@ module Ket exposing
 
 # Types
 
-Ket
+@docs Ket
+@docs VectorSpace
+@docs InnerProductSpace
 
 
 # Values
@@ -51,21 +56,17 @@ Ket
 @docs dimension
 @docs sum
 @docs foldl
-@docs variance
 @docs map
 @docs lengthReal
 @docs lengthComplex
 @docs normaliseReal
 @docs normaliseComplex
+@docs conjugate
 
 
 # Binary Operations
 
 @docs add
-@docs multiplyInvertableMatrixKet
-
-
-# Equality
 
 
 # Equality
