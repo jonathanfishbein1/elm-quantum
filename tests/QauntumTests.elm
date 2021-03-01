@@ -40,7 +40,7 @@ suite =
             \one two ->
                 let
                     v =
-                        Quantum.Ket
+                        Ket.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
                                     [ one
@@ -50,7 +50,7 @@ suite =
                             )
 
                     w =
-                        Quantum.Ket
+                        Ket.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
                                     [ one
@@ -67,7 +67,7 @@ suite =
             \_ ->
                 let
                     ket =
-                        Quantum.Ket
+                        Ket.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
                                     [ ComplexNumbers.ComplexNumber (Real.Real (Basics.sqrt 2 / 2)) Imaginary.zero
@@ -94,7 +94,7 @@ suite =
             \_ ->
                 let
                     ket =
-                        Quantum.Ket
+                        Ket.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
                                     [ ComplexNumbers.ComplexNumber (Real.Real (Basics.sqrt 2 / 2)) Imaginary.zero
@@ -122,7 +122,7 @@ suite =
             \valOne ->
                 let
                     ket =
-                        Quantum.Ket
+                        Ket.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
                                     [ boolToInt valOne
@@ -136,7 +136,7 @@ suite =
                             )
 
                     expected =
-                        Quantum.Ket
+                        Ket.Ket
                             (ColumnVector.ColumnVector
                                 (Vector.Vector
                                     [ boolToInt (not valOne)
@@ -165,7 +165,7 @@ suite =
                             ]
                             |> ColumnVector.ColumnVector
                             |> ColumnVector.map Real.Real
-                            |> Quantum.Ket
+                            |> Ket.Ket
 
                     expectedKet =
                         Vector.Vector
@@ -175,7 +175,7 @@ suite =
                             , Real.zero
                             ]
                             |> ColumnVector.ColumnVector
-                            |> Quantum.Ket
+                            |> Ket.Ket
                 in
                 Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok expectedKet)
@@ -193,7 +193,7 @@ suite =
                             ]
                             |> ColumnVector.ColumnVector
                             |> ColumnVector.map Real.Real
-                            |> Quantum.Ket
+                            |> Ket.Ket
 
                     expectedKet =
                         Vector.Vector
@@ -204,7 +204,7 @@ suite =
                             ]
                             |> ColumnVector.ColumnVector
                             |> ColumnVector.map Real.Real
-                            |> Quantum.Ket
+                            |> Ket.Ket
                 in
                 Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok expectedKet)
@@ -222,7 +222,7 @@ suite =
                             ]
                             |> ColumnVector.ColumnVector
                             |> ColumnVector.map Real.Real
-                            |> Quantum.Ket
+                            |> Ket.Ket
 
                     expectedKet =
                         Vector.Vector
@@ -233,7 +233,7 @@ suite =
                             ]
                             |> ColumnVector.ColumnVector
                             |> ColumnVector.map Real.Real
-                            |> Quantum.Ket
+                            |> Ket.Ket
                 in
                 Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok expectedKet)
@@ -251,7 +251,7 @@ suite =
                             ]
                             |> ColumnVector.ColumnVector
                             |> ColumnVector.map Real.Real
-                            |> Quantum.Ket
+                            |> Ket.Ket
 
                     expectedKet =
                         Vector.Vector
@@ -262,7 +262,7 @@ suite =
                             ]
                             |> ColumnVector.ColumnVector
                             |> ColumnVector.map Real.Real
-                            |> Quantum.Ket
+                            |> Ket.Ket
                 in
                 Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.cNOT ket
                     |> Expect.equal (Result.Ok expectedKet)
@@ -284,7 +284,7 @@ suite =
                             ]
                             |> ColumnVector.ColumnVector
                             |> ColumnVector.map Real.Real
-                            |> Quantum.Ket
+                            |> Ket.Ket
 
                     expectedKet =
                         Vector.Vector
@@ -299,7 +299,7 @@ suite =
                             ]
                             |> ColumnVector.ColumnVector
                             |> ColumnVector.map Real.Real
-                            |> Quantum.Ket
+                            |> Ket.Ket
                 in
                 Quantum.multiplyInvertableMatrixKet RowVector.realInnerProductSpace Quantum.and ket
                     |> Expect.equal (Result.Ok expectedKet)
