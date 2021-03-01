@@ -1,25 +1,5 @@
 module Quantum exposing
-    ( Bra(..)
-    , ket0
-    , ket1
-    , ketPlus
-    , ketMinus
-    , ketComplex0
-    , ketComplex1
-    , ketComplexPlus
-    , ketComplexMinus
-    , ketEmpty
-    , scalarMultiplication
-    , dimension
-    , sum
-    , foldl
-    , variance
-    , map
-    , lengthReal
-    , lengthComplex
-    , normaliseReal
-    , normaliseComplex
-    , add
+    ( variance
     , multiplyInvertableMatrixKet
     , h
     , hComplex
@@ -40,19 +20,12 @@ module Quantum exposing
     , multiplyHermitianMatrixKet
     , expectedValue
     , varianceHermitianOperator
-    , equal
-    , getAt
-    , setAt
-    , Ket
     )
 
 {-| Quantum Computing Simulator in Elm
 
 
 # Types
-
-@docs Ket.Ket
-@docs Bra
 
 
 # Values
@@ -124,6 +97,7 @@ module Quantum exposing
 -}
 
 import AbelianGroup
+import Bra
 import ColumnVector
 import CommutativeDivisionRing
 import ComplexNumbers
@@ -141,16 +115,10 @@ import UnitaryMatrix
 import Vector
 
 
-{-| Bra Type
+{-| Calculate the probability of end state, the Bra.Bra, with given start state, the Ket.Ket
 -}
-type Bra a
-    = Bra (Matrix.Matrix a)
-
-
-{-| Calculate the probability of end state, the Bra, with given start state, the Ket.Ket
--}
-probabilityOfState : RowVector.InnerProductSpace a -> Ket.Ket a -> Bra a -> Result String a
-probabilityOfState innerProductSpace (Ket.Ket kt) (Bra br) =
+probabilityOfState : RowVector.InnerProductSpace a -> Ket.Ket a -> Bra.Bra a -> Result String a
+probabilityOfState innerProductSpace (Ket.Ket kt) (Bra.Bra br) =
     let
         (Field.Field (CommutativeDivisionRing.CommutativeDivisionRing commutativeDivisionRing)) =
             innerProductSpace.vectorSpace.field
@@ -406,7 +374,7 @@ expectedValue :
     -> Result String (Real.Real Float)
 expectedValue ket matrix =
     multiplyHermitianMatrixKet matrix ket
-        |> Result.map (Ket.conjugate >> (\(Ket.Ket (ColumnVector.ColumnVector v)) -> Bra (Matrix.Matrix [ RowVector.RowVector v ])))
+        |> Result.map (Ket.conjugate >> (\(Ket.Ket (ColumnVector.ColumnVector v)) -> Bra.Bra (Matrix.Matrix [ RowVector.RowVector v ])))
         |> Result.andThen (probabilityOfState RowVector.complexInnerProductSpace ket)
         |> Result.map ComplexNumbers.real
 

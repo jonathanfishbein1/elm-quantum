@@ -8,6 +8,7 @@ import Fuzz
 import HermitianMatrix
 import Imaginary
 import InvertableMatrix
+import Ket
 import Matrix
 import NormalMatrix
 import Quantum
@@ -59,8 +60,8 @@ suite =
                                 )
                             )
                 in
-                Quantum.add Field.float v w
-                    |> Expect.equal (Quantum.add Field.float w v)
+                Ket.add Field.float v w
+                    |> Expect.equal (Ket.add Field.float w v)
         , Test.test
             "tests expected value"
           <|
