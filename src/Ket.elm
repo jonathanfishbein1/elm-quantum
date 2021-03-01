@@ -27,7 +27,7 @@ module Ket exposing
     , setAt
     )
 
-{-| Quantum Computing Simulator in Elm
+{-| Ket Module
 
 
 # Types

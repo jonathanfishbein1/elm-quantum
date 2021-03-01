@@ -1,10 +1,15 @@
 module Bra exposing
-    ( getAt
+    ( Bra(..)
+    , getAt
     , setAt
-    , Bra(..)
     )
 
-{-| Quantum Computing Simulator in Elm
+{-| Bra Module
+
+
+# Types
+
+@docs Bra
 
 
 # Manipulation
