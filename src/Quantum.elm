@@ -359,7 +359,7 @@ varianceHermitianOperator ket matrix =
             ((\(Real.Real extVal) -> HermitianMatrix.scalarMultiplication (ComplexNumbers.ComplexNumber (Real.Real extVal) Imaginary.zero) identityM)
                 >> HermitianMatrix.subtract matrix
             )
-        |> Result.andThen (\dif -> HermitianMatrix.multiply dif dif)
+        |> Result.andThen (\dif -> HermitianMatrix.multiplyIfCan dif dif)
 
 
 {-| variance
