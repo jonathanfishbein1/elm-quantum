@@ -308,19 +308,19 @@ suite =
             "tests and gate X^2 = I"
           <|
             \_ ->
-                InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.x Quantum.x
+                InvertableMatrix.multiplyIfCan RowVector.realInnerProductSpace Quantum.x Quantum.x
                     |> Expect.equal (Result.Ok (InvertableMatrix.identity Real.field 2))
         , Test.test
             "tests and gate sigmaX^2 = I"
           <|
             \_ ->
-                UnitaryMatrix.multiply Quantum.sigmaX Quantum.sigmaX
+                UnitaryMatrix.multiplyIfCan Quantum.sigmaX Quantum.sigmaX
                     |> Expect.equal (Result.Ok (UnitaryMatrix.identity 2))
         , Test.test
             "tests and gate sigmaY^2 = I"
           <|
             \_ ->
-                UnitaryMatrix.multiply Quantum.sigmaY Quantum.sigmaY
+                UnitaryMatrix.multiplyIfCan Quantum.sigmaY Quantum.sigmaY
                     |> Expect.equal (Result.Ok (UnitaryMatrix.identity 2))
         , Test.test
             "tests and gate sigmaZ^2 = I"
@@ -328,7 +328,7 @@ suite =
             \_ ->
                 let
                     sigmaZSquared =
-                        UnitaryMatrix.multiply Quantum.sigmaZ Quantum.sigmaZ
+                        UnitaryMatrix.multiplyIfCan Quantum.sigmaZ Quantum.sigmaZ
                             |> Result.withDefault Quantum.sigmaZ
 
                     i =
@@ -351,8 +351,8 @@ suite =
             \_ ->
                 let
                     hZH =
-                        InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.z Quantum.h
-                            |> Result.andThen (InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.h)
+                        InvertableMatrix.multiplyIfCan RowVector.realInnerProductSpace Quantum.z Quantum.h
+                            |> Result.andThen (InvertableMatrix.multiplyIfCan RowVector.realInnerProductSpace Quantum.h)
                             |> Result.withDefault Quantum.h
                 in
                 Expect.true "X = HZH" ((InvertableMatrix.equal Real.equal.eq).eq Quantum.x hZH)
@@ -362,8 +362,8 @@ suite =
             \_ ->
                 let
                     hXH =
-                        InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.x Quantum.h
-                            |> Result.andThen (InvertableMatrix.multiply RowVector.realInnerProductSpace Quantum.h)
+                        InvertableMatrix.multiplyIfCan RowVector.realInnerProductSpace Quantum.x Quantum.h
+                            |> Result.andThen (InvertableMatrix.multiplyIfCan RowVector.realInnerProductSpace Quantum.h)
                             |> Result.withDefault Quantum.h
                 in
                 Expect.true "Z = HXH" ((InvertableMatrix.equal Real.equal.eq).eq Quantum.z hXH)
@@ -373,8 +373,8 @@ suite =
             \_ ->
                 let
                     hYH =
-                        UnitaryMatrix.multiply Quantum.sigmaY Quantum.hComplex
-                            |> Result.andThen (UnitaryMatrix.multiply Quantum.hComplex)
+                        UnitaryMatrix.multiplyIfCan Quantum.sigmaY Quantum.hComplex
+                            |> Result.andThen (UnitaryMatrix.multiplyIfCan Quantum.hComplex)
                             |> Result.withDefault Quantum.hComplex
                 in
                 Expect.true "-Y = HYH" (UnitaryMatrix.equal.eq (UnitaryMatrix.scalarMultiplication ComplexNumbers.negativeOne Quantum.sigmaY) hYH)
@@ -384,7 +384,7 @@ suite =
             \_ ->
                 let
                     tSquared =
-                        UnitaryMatrix.multiply Quantum.t Quantum.t
+                        UnitaryMatrix.multiplyIfCan Quantum.t Quantum.t
                             |> Result.withDefault Quantum.hComplex
                 in
                 Expect.true "S = T^2" (UnitaryMatrix.equal.eq Quantum.s tSquared)
@@ -394,8 +394,8 @@ suite =
             \_ ->
                 let
                     xYX =
-                        UnitaryMatrix.multiply Quantum.sigmaY Quantum.sigmaX
-                            |> Result.andThen (UnitaryMatrix.multiply Quantum.sigmaX)
+                        UnitaryMatrix.multiplyIfCan Quantum.sigmaY Quantum.sigmaX
+                            |> Result.andThen (UnitaryMatrix.multiplyIfCan Quantum.sigmaX)
                             |> Result.withDefault Quantum.hComplex
                 in
                 Expect.true "-Y = XYX" (UnitaryMatrix.equal.eq (UnitaryMatrix.scalarMultiplication ComplexNumbers.negativeOne Quantum.sigmaY) xYX)
